@@ -6,7 +6,7 @@
   "scripts": {
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "docs:cname": "echo 'www.liuyang19900520' > docs/.vuepress/dist/CNAME"
+    "docs:cname": "echo 'www.liuyang19900520.com' > docs/.vuepress/dist/CNAME"
   }
 
 }

@@ -7,6 +7,8 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "docs:cname": "echo 'www.liuyang19900520.com' > docs/.vuepress/dist/CNAME"
+  },
+  "devDependencies": {
+    "vuepress": "^1.2.0"
   }
-
 }

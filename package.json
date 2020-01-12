@@ -1,13 +1,15 @@
 {
   "name": "vuepress-liuyang19900520",
   "version": "1.0.0",
+  "description": "LiuYang'blog",
   "main": "index.js",
-  "license": "MIT",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "docs:cname": "echo 'www.liuyang19900520.com' > docs/.vuepress/dist/CNAME"
+    "docs:build": "vuepress build docs"
   },
+  "author": "liuyang19900520",
+  "license": "ISC",
   "devDependencies": {
     "vuepress": "^1.2.0"
   }

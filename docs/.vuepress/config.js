@@ -1,4 +1,7 @@
   module.exports = {
+    title: "LiuYang's Blog",
+    description: 'Just playing around',
+    base: "/docs/",
     themeConfig: {
       logo: '/assets/img/logo.png',
       search: false,

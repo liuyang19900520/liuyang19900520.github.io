@@ -6,7 +6,7 @@
       search: false,
       nav: [{
           text: 'Blog',
-          link: '/language/chinese/'
+          link: '/blog/'
         },
         {
           text: 'Languages',

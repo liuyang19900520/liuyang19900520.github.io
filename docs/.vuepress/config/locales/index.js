@@ -5,7 +5,7 @@ module.exports = {
   // 作为特例，默认语言可以使用 '/' 作为其路径。
   '/': {
     // 多语言下拉菜单的标题
-    selectText: '选择语言',
+    selectText: '语言',
     // 该语言在下拉菜单中的标签
     label: '简体中文',
     search: false,

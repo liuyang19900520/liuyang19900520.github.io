@@ -1,4 +1,4 @@
 ---
 home: true
-heroImage: /assets/img/home3.png
+heroImage: /assets/img/home.png
 ---

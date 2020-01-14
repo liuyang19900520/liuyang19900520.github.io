@@ -1,164 +1,46 @@
 module.exports = {
-    'zh': Object.assign({}, {
-      '/views/1.x/': [
-        {
-          title: '基础',
-          collapsable: false,
-          children: [
-            '',
-            'installUse',
-            'blog',
-            'frontMatter'
-          ]
-        },
-        {
-          title: '进阶',
-          collapsable: false,
-          children: [
-            'timeline',
-            'valine',
-            'password',
-            'configJs',
-            'home',
-            'themePicker',
-            'ga',
-            '404',
-            'mode'
-          ]
-        },
-        {
-          title: '默认主题配置',
-          collapsable: false,
-          children: [
-            'abstract',
-            'syntax',
-            'customStyleAndScript',
-            'sidebar'
-          ]
-        },
-        {
-          title: '其他',
-          collapsable: false,
-          children: [
-            '0update1',
-            'recommend'
-          ]
-        }
-      ],
-      '/views/0.x/': [
-        {
-          title: '基础',
-          collapsable: false,
-          children: [
-            '',
-            'installUse',
-            'category',
-            'tag',
-          ]
-        },
-        {
-          title: '进阶',
-          collapsable: false,
-          children: [
-            'timeline',
-            'valine',
-            'password',
-            'configJs',
-            'home'
-          ]
-        },
-        {
-          title: '其他',
-          collapsable: false,
-          children: [
-            'abstract',
-          ]
-        }
-      ],
-      '/views/plugins/': [
-        {
-          title: '插件',
-          collapsable: true,
-          children: [
-            '',
-            'backToTop',
-            'pagation',
-            'screenfull',
-            'loadingPage',
-            'ga',
-            'kanbanniang',
-            'comments',
-            'extractCode',
-            'rss',
-            'bgmPlayer'
-          ]
-        }
-      ]
-    }),
-    'en': Object.assign({}, {
-      '/en/views/1.x/': [
-        {
-          title: 'Basic',
-          collapsable: false,
-          children: [
-            '',
-            'installUse',
-            'blog',
-            'frontMatter'
-          ]
-        },
-        {
-          title: 'Advanced',
-          collapsable: false,
-          children: [
-            'timeline',
-            'valine',
-            'password',
-            'configJs',
-            'home',
-            'themePicker',
-            'ga',
-            '404',
-            'mode'
-          ]
-        },
-        {
-          title: 'Default Theme Config',
-          collapsable: false,
-          children: [
-            'abstract',
-            'syntax',
-            'customStyleAndScript',
-            'sidebar'
-          ]
-        },
-        {
-          title: 'Other',
-          collapsable: false,
-          children: [
-            '0update1',
-            'recommend'
-          ]
-        }
-      ],
-      '/en/views/plugins/': [
-        {
-          title: 'Plugins',
-          collapsable: true,
-          children: [
-            '',
-            'backToTop',
-            'pagation',
-            'screenfull',
-            'loadingPage',
-            'ga',
-            'kanbanniang',
-            'comments',
-            'extractCode',
-            'rss',
-            'bgmPlayer'
-          ]
-        }
-      ]
-    })
+  'zh': {
+    '/subject/mall-study/': [{
+        title: 'Group 1', // 必要的
+        path: '/subject/mall-study/', // 可选的, 应该是一个绝对路径
+        sidebarDepth: 1, // 可选的, 默认值是 1
+        children: [{
+          title: 'Group 1-1', // 必要的
+          path: '/subject/mall-study/1-1', // 可选的, 应该是一个绝对路径
+          collapsable: false, // 可选的, 默认值是 true,
+          sidebarDepth: 1, // 可选的, 默认值是 1
+        }, {
+          title: 'Group 1-2', // 必要的
+          path: '/subject/mall-study/1-2', // 可选的, 应该是一个绝对路径
+          collapsable: false, // 可选的, 默认值是 true,
+          sidebarDepth: 1, // 可选的, 默认值是 1
+        }]
+      },
+      {
+        title: 'Group 2',
+        path: '/subject/mall-study/'
+      }
+    ],
+    '/blog/': [{
+        title: 'java', // 必要的
+
+        sidebarDepth: 1, // 可选的, 默认值是 1
+        children: [{
+          title: 'java 1-1', // 必要的
+
+          collapsable: false, // 可选的, 默认值是 true,
+          sidebarDepth: 1, // 可选的, 默认值是 1
+        }, {
+          title: 'java 1-2', // 必要的
+
+          collapsable: false, // 可选的, 默认值是 true,
+          sidebarDepth: 1, // 可选的, 默认值是 1
+        }]
+      },
+      {
+        title: 'python',
+      }
+    ]
+
   }
+}

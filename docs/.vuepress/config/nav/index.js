@@ -5,8 +5,8 @@ module.exports = {
     }, {
       text: '专题',
       items: [{
-        text: 'mall-study',
-        link: '/subject/mall-study/'
+        text: 'mall-learning-boot',
+        link: '/subject/mall-learning-boot/'
       }, ]
     },
     {

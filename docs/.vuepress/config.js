@@ -20,6 +20,10 @@ module.exports = {
     }
   },
   markdown: {
-    lineNumbers: true
+    lineNumbers: true,
+    externalLinks: {
+      target: '_blank',
+      rel: ['https://github.com/macrozheng/mall', 'https://blog.csdn.net/u012453843/category_6970308.html']
+    }
   },
 }

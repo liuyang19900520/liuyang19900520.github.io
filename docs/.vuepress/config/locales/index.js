@@ -10,7 +10,7 @@ module.exports = {
     label: '简体中文',
     search: false,
     nav: nav.zh,
-    sidebar: sidebar.zh
+    sidebar: sidebar.zh,
   },
   '/en/': {
     selectText: 'Languages',

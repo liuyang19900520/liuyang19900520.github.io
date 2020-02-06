@@ -7,6 +7,9 @@ module.exports = {
       items: [{
         text: 'mall-learning-boot',
         link: '/subject/mall-learning-boot/'
+      }, {
+        text: 'vue-cli + nest.js',
+        link: '/subject/jcaiot/'
       }, ]
     },
     {

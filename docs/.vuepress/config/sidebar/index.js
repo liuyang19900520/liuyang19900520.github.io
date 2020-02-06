@@ -1,3 +1,5 @@
+const jcaiot = require('./jcaiot');
+
 module.exports = {
   'zh': {
     '/subject/mall-learning-boot/': [{
@@ -16,6 +18,7 @@ module.exports = {
         ]
       }
     ],
+    '/subject/jcaiot/': jcaiot,
     '/blog/': [{
         title: 'java', // 必要的
 

@@ -2,6 +2,7 @@ const themeConfig = require('./config/theme/')
 
 module.exports = {
   themeConfig,
+  logo: 'assets/img/logo.png',
   locales: {
     '/': {
       lang: 'zh-CN', // 将会被设置为 <html> 的 lang 属性

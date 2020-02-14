@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "docs:cname": "echo 'www.example.com' > docs/.vuepress/dist/CNAME"
+    "docs:cname": "echo 'www.liuyang19900520.com' > docs/.vuepress/dist/CNAME"
   },
   
   "author": "liuyang19900520",

@@ -3,6 +3,7 @@ module.exports = [{
   sidebarDepth: 1, // 可选的, 默认值是 1
   children: [
     'vue-route-framework',
-    'i18n'
+    'i18n',
+    'device-check'
   ]
 }]

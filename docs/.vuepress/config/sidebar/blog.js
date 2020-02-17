@@ -1,5 +1,6 @@
 module.exports = [{
     title: 'Java', // 必要的
+    collection: false,
     sidebarDepth: 1, // 可选的, 默认值是 1
     children: [
       'java/java-collection'
@@ -7,6 +8,7 @@ module.exports = [{
   },
   {
     title: 'Frontend', // 必要的
+    collection: false,
     sidebarDepth: 1, // 可选的, 默认值是 1
     children: [
       'frontend/frontend-collection'

@@ -8,7 +8,7 @@ module.exports = {
         text: 'mall-learning-boot',
         link: '/subject/mall-learning-boot/'
       }, {
-        text: 'vue-cli + nest.js',
+        text: 'NestJS+Vue+MongoDB小型展示系统',
         link: '/subject/jcaiot/'
       }, ]
     },

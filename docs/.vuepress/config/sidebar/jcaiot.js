@@ -4,7 +4,8 @@ module.exports = [{
   children: [
     'vue-route-framework',
     'i18n',
-    'device-check'
+    'device-check',
+    'api-framework'
   ]
 }, {
   title: 'NestJS', // 必要的

@@ -13,3 +13,21 @@
 整个项目我需要的服务端api非常的简单，只需要实现若干内容的CRUD即可，所以也不需要什么复杂的配置。所以在这一步初始的配置上，我只需要实现一个查询banner的功能即可，也就是说，我需要继承一个MongoDB的数据库连接，之后实现一个简单的查询。所以我找到了NestJS的官方demo--NestJS集成mongoose的实例完成了我的第一个查询  
 [NestJS集成mongoose](https://github.com/nestjs/nest/tree/master/sample/06-mongoose)  
 前提：我们创建了自己的数据库，并且使用创建了banners的collection。在这里我出现过一个问题，就是按照上述demo的写法，我的数据库collection如果是如果是单数（例如：banner）,将无法实现我的查询功能。
+
+## NestJS实现简单的跨域请求
+由于展示端和服务端分别在不同的端口上，所以涉及到跨域请求的问题。NestJS也有比较开箱即用的解决方法。  
+```typescript
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.enableCors();
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+    next();
+  });
+
+  await app.listen(3000);
+}
+bootstrap();
+```

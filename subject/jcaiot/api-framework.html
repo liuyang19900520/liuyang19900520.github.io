@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>设计Vue端API请求模块 | LiuYang&#39;s Blog</title>
+    <meta name="description" content="我常常想，想进步总不是坏事">
+    <meta name="generator" content="VuePress 1.3.1">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.bf8bddd1.css" as="style"><link rel="preload" href="/assets/js/app.fcfff669.js" as="script"><link rel="preload" href="/assets/js/2.5bad1ffe.js" as="script"><link rel="preload" href="/assets/js/14.390d585c.js" as="script"><link rel="prefetch" href="/assets/js/10.edec7521.js"><link rel="prefetch" href="/assets/js/11.7df5103f.js"><link rel="prefetch" href="/assets/js/12.b0b31ed5.js"><link rel="prefetch" href="/assets/js/13.d0293107.js"><link rel="prefetch" href="/assets/js/15.c3a03b6b.js"><link rel="prefetch" href="/assets/js/16.5a7210c5.js"><link rel="prefetch" href="/assets/js/17.1055c282.js"><link rel="prefetch" href="/assets/js/18.6e60430c.js"><link rel="prefetch" href="/assets/js/19.64985271.js"><link rel="prefetch" href="/assets/js/20.e92b5a39.js"><link rel="prefetch" href="/assets/js/21.ca48fa3e.js"><link rel="prefetch" href="/assets/js/22.01dbb949.js"><link rel="prefetch" href="/assets/js/23.b1968760.js"><link rel="prefetch" href="/assets/js/24.57be745e.js"><link rel="prefetch" href="/assets/js/3.4a6b1c23.js"><link rel="prefetch" href="/assets/js/4.c1d07e90.js"><link rel="prefetch" href="/assets/js/5.c617733e.js"><link rel="prefetch" href="/assets/js/6.030cbab3.js"><link rel="prefetch" href="/assets/js/7.bb65bb95.js"><link rel="prefetch" href="/assets/js/8.9b3de8e8.js"><link rel="prefetch" href="/assets/js/9.6e0df588.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.bf8bddd1.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/assets/img/logo.png" alt="LiuYang's Blog" class="logo"> <span class="site-name can-hide">LiuYang's Blog</span></a> <div class="links"><!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/" class="nav-link">
+  博客
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="专题" class="dropdown-title"><span class="title">专题</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/subject/mall-learning-boot/" class="nav-link">
+  mall-learning-boot
+</a></li><li class="dropdown-item"><!----> <a href="/subject/jcaiot/" class="nav-link router-link-active">
+  NestJS+Vue+MongoDB小型展示系统
+</a></li></ul></div></div><div class="nav-item"><a href="https://github.com/liuyang19900520" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Select language" class="dropdown-title"><span class="title">语言</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/subject/jcaiot/api-framework.html" class="nav-link router-link-exact-active router-link-active">
+  简体中文
+</a></li><li class="dropdown-item"><!----> <a href="/en/" class="nav-link">
+  English
+</a></li><li class="dropdown-item"><!----> <a href="/jp/" class="nav-link">
+  日本語
+</a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/" class="nav-link">
+  博客
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="专题" class="dropdown-title"><span class="title">专题</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/subject/mall-learning-boot/" class="nav-link">
+  mall-learning-boot
+</a></li><li class="dropdown-item"><!----> <a href="/subject/jcaiot/" class="nav-link router-link-active">
+  NestJS+Vue+MongoDB小型展示系统
+</a></li></ul></div></div><div class="nav-item"><a href="https://github.com/liuyang19900520" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Select language" class="dropdown-title"><span class="title">语言</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/subject/jcaiot/api-framework.html" class="nav-link router-link-exact-active router-link-active">
+  简体中文
+</a></li><li class="dropdown-item"><!----> <a href="/en/" class="nav-link">
+  English
+</a></li><li class="dropdown-item"><!----> <a href="/jp/" class="nav-link">
+  日本語
+</a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Vue</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/subject/jcaiot/vue-route-framework.html" class="sidebar-link">Vue CLI搭建最基本结构</a></li><li><a href="/subject/jcaiot/i18n.html" class="sidebar-link">i18n实现国际化</a></li><li><a href="/subject/jcaiot/device-check.html" class="sidebar-link">判断浏览器类型</a></li><li><a href="/subject/jcaiot/api-framework.html" class="active sidebar-link">设计Vue端API请求模块</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/subject/jcaiot/api-framework.html#创建api模块" class="sidebar-link">创建api模块</a></li><li class="sidebar-sub-header"><a href="/subject/jcaiot/api-framework.html#api模块调用的事例" class="sidebar-link">Api模块调用的事例</a></li><li class="sidebar-sub-header"><a href="/subject/jcaiot/api-framework.html#实现根据语言实现重新加载" class="sidebar-link">实现根据语言实现重新加载</a></li></ul></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>NestJS</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>MongoDB</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="设计vue端api请求模块"><a href="#设计vue端api请求模块" class="header-anchor">#</a> 设计Vue端API请求模块</h1> <p>之前我们在<a href="https://www.liuyang19900520.com/subject/jcaiot/nestjs-starter.html" target="_blank" rel="https://github.com/macrozheng/mall,https://blog.csdn.net/u012453843/category_6970308.html">配置简单的NestJS<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> 中为服务端实现了跨域请求，这次我们设计一个客户端的Api请求模块。</p> <h2 id="创建api模块"><a href="#创建api模块" class="header-anchor">#</a> 创建api模块</h2> <h3 id="导入axios模块"><a href="#导入axios模块" class="header-anchor">#</a> 导入axios模块</h3> <p>在/src/utils/下创建axiosUtils.js。目前我们只是设计了baseURL和超时时间，后续我们需要在这里设计一些拦截器，共通header之类的内容。</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">var</span> instance <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    baseURL<span class="token operator">:</span> <span class="token string">'http://localhost:3000/'</span><span class="token punctuation">,</span>
+    timeout<span class="token operator">:</span> <span class="token number">30000</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> instance<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><h3 id="创建单独业务请求模块"><a href="#创建单独业务请求模块" class="header-anchor">#</a> 创建单独业务请求模块</h3> <p>创建/src/api/。这个部分主要负责放我们所有的业务Api。首先我们先创建一个bannersApi.js。</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'../utils/axiosUtils'</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> banner <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token function">selectBanner</span><span class="token punctuation">(</span><span class="token parameter">lang</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> axios<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">&quot;/banners/&quot;</span> <span class="token operator">+</span> lang<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> banner<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p>代码很简单，就是一个单纯的访问，我们可以创建不同的业务api，并且在里面实现我们的业务CRUD</p> <h3 id="创建index导出业务请求"><a href="#创建index导出业务请求" class="header-anchor">#</a> 创建index导出业务请求</h3> <p>同样在/src/api/下，创建一个index.js负责统一导出api。</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token comment">/** 
+ * api接口的统一出口
+ */</span>
+
+<span class="token keyword">import</span> banner <span class="token keyword">from</span> <span class="token string">'./bannersApi'</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 导出接口</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+    banner
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br></div></div><p>在这个文件中，我们可以分别倒入，然后再统一导出接口，以便我们挂载到Vue实例上。</p> <h3 id="将api组件挂载到vue实例上"><a href="#将api组件挂载到vue实例上" class="header-anchor">#</a> 将api组件挂载到Vue实例上</h3> <p>在main.js上，我们修改了如下代码，可以通过注释看到，我们将api挂载到了Vue实例上。</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./App.vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> vuetify <span class="token keyword">from</span> <span class="token string">'./plugins/vuetify'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> i18n <span class="token keyword">from</span> <span class="token string">'./plugins/i18n'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> router <span class="token keyword">from</span> <span class="token string">'./router/'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> store <span class="token keyword">from</span> <span class="token string">'./store'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> api <span class="token keyword">from</span> <span class="token string">'./api'</span>
+
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$api <span class="token operator">=</span> api<span class="token punctuation">;</span> <span class="token comment">// 将api挂载到vue的原型上</span>
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>productionTip <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+
+<span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  vuetify<span class="token punctuation">,</span>
+  i18n<span class="token punctuation">,</span>
+  router<span class="token punctuation">,</span>
+  store<span class="token punctuation">,</span>
+  <span class="token function-variable function">render</span><span class="token operator">:</span> <span class="token parameter">h</span> <span class="token operator">=&gt;</span> <span class="token function">h</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">$mount</span><span class="token punctuation">(</span><span class="token string">'#app'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br></div></div><h2 id="api模块调用的事例"><a href="#api模块调用的事例" class="header-anchor">#</a> Api模块调用的事例</h2> <p>回到我们的业务代码上来看，再写真正的业务之前，我们需要看看是不是代码能够顺利运行。</p> <h3 id="创建请求方法"><a href="#创建请求方法" class="header-anchor">#</a> 创建请求方法</h3> <p>在/src/components/pc/web/HomeView.vue中，我们创建一个方法负责请求我们的banner</p> <div class="language-Js line-numbers-mode"><pre class="language-js"><code>methods<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token function-variable function">getBanner</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> lang <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$store<span class="token punctuation">.</span>state<span class="token punctuation">.</span>message<span class="token punctuation">.</span>lang<span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$api<span class="token punctuation">.</span>banner<span class="token punctuation">.</span><span class="token function">selectBanner</span><span class="token punctuation">(</span>lang<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">res</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>banner <span class="token operator">=</span> res<span class="token punctuation">.</span>data<span class="token punctuation">.</span>banner<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><p>上述代码的调用位置在created生命周期中，返回值的banner是data，并且作为测试结果世界显示在页面上。我的结果是OK的。</p> <h2 id="实现根据语言实现重新加载"><a href="#实现根据语言实现重新加载" class="header-anchor">#</a> 实现根据语言实现重新加载</h2> <p>上述功能实现后又发生了一个小问题，就是我们切换语言，只能切换路由，但是我们真正的数据并没有实现更新。原因是我们发送请求的处理是在createrd的生命周期中，我想的办法是加一个监听属性，就监听路由的path，之后再调用刚刚的请求api。</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code> watch<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;$route.path&quot;</span><span class="token operator">:</span> <span class="token string">&quot;getBanner&quot;</span>
+  <span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>再次切换语言的时候，我们能够实现了固定文字、路由地址、api返回数据的多语言切换。</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/subject/jcaiot/device-check.html" class="prev">
+        判断浏览器类型
+      </a></span> <span class="next"><a href="/subject/jcaiot/nestjs-starter.html">
+        配置简单的NestJS
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.fcfff669.js" defer></script><script src="/assets/js/2.5bad1ffe.js" defer></script><script src="/assets/js/14.390d585c.js" defer></script>
+  </body>
+</html>

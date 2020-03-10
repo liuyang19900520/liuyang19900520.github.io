@@ -41,8 +41,8 @@ module.exports = {
     }, {
       text: 'サブジェクト',
       items: [{
-        text: 'mall-study',
-        link: '/jp/subject/mall-study/'
+        text: 'Java系構築',
+        link: '/jp/subject/mall-learning-boot/'
       }, ]
     },
     {

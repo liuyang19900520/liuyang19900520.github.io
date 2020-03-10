@@ -1,4 +1,5 @@
 const jcaiot = require('./jcaiot');
+const mallBootJp = require('./mall-learning-boot-jp');
 const blog = require('./blog');
 
 module.exports = {
@@ -21,5 +22,8 @@ module.exports = {
     ],
     '/subject/jcaiot/': jcaiot,
     '/blog/': blog
+  },
+  'jp': {
+    '/jp/subject/mall-learning-boot/': mallBootJp
   }
 }

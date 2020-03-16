@@ -12,7 +12,8 @@ module.exports = [{
   sidebarDepth: 1, // 可选的, 默认值是 1
   children: [
     'nestjs-starter',
-    'nestjs-auth'
+    'nestjs-auth',
+    'nestjs-common'
   ]
 }, {
   title: 'MongoDB', // 必要的

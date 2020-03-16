@@ -96,7 +96,8 @@ export class HttpExceptionFilter implements ExceptionFilter<Error> {
 }
 ```
 代码简单易懂，由于我们也需要接受系统内部的Error，所以我们这个过滤器ExceptionFilter<Error>，也就是说明，所以的错误我们都进行了接受处理。
-
+我们默认出现的Error都是服务器内部错误500，一旦在我们抛异常时指定了HttpStatus，或者调用的第三方库中有返回指定的HttpStatus，就可以将500进行指定的替换。最后在response输出的时候，给予了特定的异常输出形式。  
+这套理论其实没有什么不同，和Spring非常相似，都是在使用过滤器或拦截器的类似功能，对异常统一处理。
 
 
 

@@ -1,4 +1,10 @@
-# Vue CLI搭建最基本结构
+---
+title: Vue CLI搭建最基本结构
+tags:
+ - Vue
+categories: 
+ - Vue
+---
 
 ## 基本搭建
 通过脚手架快速搭建出项目想骨架

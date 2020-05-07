@@ -9,10 +9,12 @@
     "docs:build": "vuepress build docs",
     "docs:cname": "echo 'www.liuyang19900520.com' > docs/.vuepress/dist/CNAME"
   },
-  
   "author": "liuyang19900520",
   "license": "ISC",
   "devDependencies": {
-    "vuepress": "^1.2.0"
+    "vuepress": "^1.4.1"
+  },
+  "dependencies": {
+    "vuepress-theme-reco": "^1.4.5"
   }
 }

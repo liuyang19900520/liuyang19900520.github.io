@@ -1,4 +1,5 @@
 # NestJS Common配置
+
 这一个章节，我们丰富一下NestJS在服务端的相关配置。
 ## 配置异常
 ### 自定义异常
@@ -74,7 +75,7 @@ export class HttpExceptionFilter implements ExceptionFilter<Error> {
           code: ApiErrorCode.TOKEN_INVALID,
           message: "TOKEN_INVALID",
           data: {
-            date: new Date().toLocaleDateString() + new Date().toLocaleTimeString,
+            date: new Date().toLocaleDateString() +" " +new Date().toLocaleTimeString,
             path: request.url
           }
         });
@@ -86,7 +87,7 @@ export class HttpExceptionFilter implements ExceptionFilter<Error> {
           code: "1",
           message: exception.message,
           data: {
-            date: new Date().toLocaleDateString() + new Date().toLocaleTimeString,
+            date: new Date().toLocaleDateString() +" " + new Date().toLocaleTimeString,
             path: request.url
           }
         });
@@ -95,10 +96,17 @@ export class HttpExceptionFilter implements ExceptionFilter<Error> {
 
 }
 ```
-代码简单易懂，由于我们也需要接受系统内部的Error，所以我们这个过滤器ExceptionFilter<Error>，也就是说明，所以的错误我们都进行了接受处理。
+代码简单易懂，由于我们也需要接受系统内部的Error，所以我们这个过滤器ExceptionFilter，也就是说明，所以的错误我们都进行了接受处理。
 我们默认出现的Error都是服务器内部错误500，一旦在我们抛异常时指定了HttpStatus，或者调用的第三方库中有返回指定的HttpStatus，就可以将500进行指定的替换。最后在response输出的时候，给予了特定的异常输出形式。  
 这套理论其实没有什么不同，和Spring非常相似，都是在使用过滤器或拦截器的类似功能，对异常统一处理。
 
+
+## Config配置
+关于Config的配置，我们主要希望能够实现如下内容
+* 区分各个环境，我的项目里主要就区分一下生产环境和开发环境2个即可了
+* 相关固定值的配置化模块化导入
+
+需要说明的事，截止到目前
 
 
 

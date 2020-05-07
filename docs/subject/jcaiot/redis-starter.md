@@ -30,5 +30,6 @@ firewall-cmd --reload
 ```
 src/redis-server redis.conf &
 ```
+最后在客户端连接测试一下，成功。
 
 

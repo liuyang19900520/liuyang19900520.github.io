@@ -1,8 +1,7 @@
-我很小的时候写博客，主要是无病呻吟。
-## 专题
-###  NestJS + Vue + MongoDB 小型展示系统
- * [配置简单的NestJS](https://www.liuyang19900520.com/subject/jcaiot/nestjs-starter.html) 
+我很小的时候写博客，主要是无病呻吟。  
+而今的生活平淡，虽谈不上识尽愁滋味，却充满着无能力为。反而在这个年纪，庆幸自己的生活，愈发想要珍惜时间，努力学习，争取不被时代所淘汰。
 
-##  博客
+
+##  手动目录
 ### Java
  * [Java知识的收藏夹](https://www.liuyang19900520.com/blog/java/java-collection.html) 

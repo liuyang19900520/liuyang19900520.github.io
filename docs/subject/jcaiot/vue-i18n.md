@@ -1,4 +1,12 @@
-# i18n实现国际化
+---
+title: Vue i18n实现国际化
+categories: 
+ - Vue
+tags:
+ - Vue
+ - i18n
+date: 2020-05-09
+---
 
 ## 实现基本配置
 ### 安装并挂载

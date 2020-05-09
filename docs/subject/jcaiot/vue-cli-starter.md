@@ -1,9 +1,11 @@
 ---
 title: Vue CLI搭建最基本结构
-tags:
- - Vue
 categories: 
  - Vue
+tags:
+ - Vue
+ - Vue CLI
+date: 2020-05-07
 ---
 
 ## 基本搭建

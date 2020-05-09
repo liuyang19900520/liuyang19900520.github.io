@@ -8,6 +8,13 @@ module.exports = {
     lastUpdated: 'Last Updated',
     startYear: '2019',
     displayAllHeaders: true,
+    vssueConfig: {
+        platform: 'github',
+        owner: 'liuyang19900520',
+        repo: 'liuyang19900520.github.io',
+        clientId: '9af5a2c4354bda999c7b',
+        clientSecret: 'd10e4e434b00ed37077640d106cebbc363435764',
+    },
     nav: [{
             text: 'Blog',
             link: '/',

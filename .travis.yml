@@ -1,6 +1,10 @@
 language: node_js
 node_js:
   - lts/*
+env:
+  global:
+    - VSSUEID=$VSSUEID
+    - VSSUESECRET=$VSSUESECRET
 install:
   - yarn install # npm ci
 script:

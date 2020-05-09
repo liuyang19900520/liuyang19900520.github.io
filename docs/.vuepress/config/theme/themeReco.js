@@ -1,4 +1,4 @@
-const sidebar = require('../sidebar/')
+const sidebar = require('../sidebar/');
 module.exports = {
     type: 'blog',
     sidebar: sidebar.sidebar, //在所有页面中启用自动生成侧栏
@@ -12,8 +12,8 @@ module.exports = {
         platform: 'github',
         owner: 'liuyang19900520',
         repo: 'liuyang19900520.github.io',
-        clientId: '9af5a2c4354bda999c7b',
-        clientSecret: 'd10e4e434b00ed37077640d106cebbc363435764',
+        clientId: process.env.VSSUEID,
+        clientSecret: process.env.VSSUESECRET,
     },
     nav: [{
             text: 'Blog',
@@ -49,4 +49,4 @@ module.exports = {
     },
     editLinks: true,
     mode: 'light'
-}
+};

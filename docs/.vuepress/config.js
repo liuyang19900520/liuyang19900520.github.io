@@ -1,4 +1,4 @@
-const themeConfig = require('./config/theme/')
+const themeConfig = require('./config/theme/');
 module.exports = {
   title: "LiuYang's Blog",
   description: '我常常想，想进步总不是坏事',
@@ -14,4 +14,7 @@ module.exports = {
     }]
   ],
   themeConfig,
-}
+  markdown: {
+    lineNumbers: true
+  },
+};

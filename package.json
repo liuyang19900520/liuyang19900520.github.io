@@ -12,9 +12,10 @@
   "author": "liuyang19900520",
   "license": "ISC",
   "devDependencies": {
-    "vuepress": "^1.5.4"
+    "vuepress": "^1.5.4",
+    "vuepress-theme-reco": "^1.5.5"
   },
   "dependencies": {
-    "vuepress-theme-reco": "^1.4.5"
+    "vuepress-theme-reco": "^1.5.5"
   }
 }

@@ -5,7 +5,6 @@ module.exports = [{
     'vue-cli-starter',
     'vue-device-check',
     'vue-i18n',
-    'api-framework'
   ]
 }, {
   title: 'NestJS', // 必要的
@@ -13,8 +12,7 @@ module.exports = [{
   children: [
     'nestjs-starter',
     'nestjs-hot-reload',
-    'nestjs-auth',
-    'nestjs-common'
+    'nestjs-exception',
   ]
 }, {
   title: 'MongoDB', // 必要的

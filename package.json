@@ -12,7 +12,7 @@
   "author": "liuyang19900520",
   "license": "ISC",
   "devDependencies": {
-    "vuepress": "^1.4.1"
+    "vuepress": "^1.5.4"
   },
   "dependencies": {
     "vuepress-theme-reco": "^1.4.5"

@@ -24,9 +24,6 @@ module.exports = {
             text: 'Subject',
             icon: 'reco-document',
             items: [{
-                text: 'mall-learning-boot',
-                link: '/subject/mall-learning-boot/'
-            }, {
                 text: 'NestJS+Vue+MongoDB小型展示系统',
                 link: '/subject/jcaiot/'
             }, ]

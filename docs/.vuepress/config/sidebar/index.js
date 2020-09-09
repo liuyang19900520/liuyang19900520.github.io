@@ -1,23 +1,9 @@
 const jcaiot = require('./jcaiot');
+const laymanStarter = require('./layman-starter');
 
 module.exports = {
   'sidebar': Object.assign({}, {
-    '/subject/mall-learning-boot/': [{
-        title: '前言', // 必要的
-        sidebarDepth: 1, // 可选的, 默认值是 1
-        children: [
-          'introduction',
-          'architecture'
-        ]
-      },
-      {
-        title: '搭建',
-        sidebarDepth: 1, // 可选的, 默认值是 1
-        children: [
-          'mysql'
-        ]
-      }
-    ],
+    '/subject/layman-starter/': laymanStarter,
     '/subject/jcaiot/': jcaiot,
   })
 

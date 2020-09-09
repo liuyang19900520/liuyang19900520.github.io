@@ -26,6 +26,9 @@ module.exports = {
             items: [{
                 text: 'NestJS+Vue+MongoDB小型展示系统',
                 link: '/subject/jcaiot/'
+            }, {
+                text: 'layman-starter(Spring Boot入门)',
+                link: '/subject/layman-starter/'
             }, ]
         }, {
             text: 'Github',

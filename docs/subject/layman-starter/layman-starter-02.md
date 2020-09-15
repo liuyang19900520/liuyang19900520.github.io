@@ -97,45 +97,89 @@ public class StarterTestController {
 但让这只是默认配置的效果，我们还可以通过添加自己的配置，使得接口文档更加丰富化。
 
 ### 添加Swagger2的配置
+我们添加了一个新的ui依赖，并且修改了一些简单的配置。如下：
 ``` java
-package com.liuyang19900520.layman.starter.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-/**
- * <p>
- *
- * </p>
- *
- * @author Max Liu
- * @since 2020/09/13
- */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
     @Bean
     public Docket createRestApi() {
+        //设置全局响应状态码
+        List<Response> responseMessageList = new ArrayList<>();
+        responseMessageList.add(new ResponseBuilder().code("200").description("请求成功").build());
         return new Docket(DocumentationType.SWAGGER_2)
                 .pathMapping("/")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.liuyang19900520.layman.starter.module.**.controller"))
+                //报名不能设置通配符*
+                .apis(RequestHandlerSelectors.basePackage("com.liuyang19900520.layman.starter.module"))
                 .paths(PathSelectors.any())
-                .build().apiInfo(new ApiInfoBuilder()
-                        .title("layman-starter接口文档")
-                        .description("layman-starter接口文档，测试使用")
-                        .version("0.0.1")
-                        .contact(new Contact("Max Liu", "https://www.liuyang1990520.com", "liuyang19900520@hotmail.com"))
-                        .build());
+                .build().apiInfo(apiInfo());
+
     }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("layman-starter接口文档")
+                .description("layman-starter接口文档，测试使用")
+                .version("0.0.1")
+                .contact(new Contact("Max Liu", "https://www.liuyang1990520.com", "liuyang19900520@hotmail.com"))
+                .build();
+    }
+}
+```
+我们也修改了mybatis-plus generator的配置，这样在逆向生成实体类的时候，也能带有我们Swagger2的注解。
+``` java
+    globalConfig.setSwagger2(true); 
+```
+这样我们再次生成module下的文件进行，得到了支持swagger2的实体类。
+
+### 设置共通返回值
+作为api接口，我们常常会采用一些共通的返回值，比如code，msg，data等等，这样方便前端的工程师在解析数据之前进行判断。这部分代码就不再粘贴了。需要注意的事，CommonResult类中的data属性，我们需要使用泛型而非Object作为类型，因为swagger2的转换中需要。
+
+### 再次修改controller进行测试
+``` java
+@RestController
+@RequestMapping("/test/starterTest")
+@Api(tags = "用户管理相关接口")
+public class StarterTestController {
+    @Autowired
+    StarterTestService starterTestService;
+
+    @GetMapping("/users")
+    @ApiOperation("显示用户一览")
+    public CommonResult users() {
+        return CommonResult.success(starterTestService.list());
+    }
+
+    @GetMapping("/users/{id}")
+    @ApiOperation("显示当前用户")
+    public CommonResult user(@PathVariable Long id) {
+        return CommonResult.success(starterTestService.getById(id));
+    }
+
+    @PostMapping("/users/")
+    @ApiOperation("添加用户")
+    public CommonResult postUser(@RequestBody StarterTest starterTest) {
+        return CommonResult.success(starterTestService.save(starterTest));
+    }
+
+    @PutMapping("/users/{id}")
+    @ApiOperation("修改用户")
+    public CommonResult putUser(@RequestBody StarterTest starterTest, @PathVariable Long id) {
+        starterTest.setId(id);
+        return CommonResult.success(starterTestService.updateById(starterTest));
+    }
+
+    @DeleteMapping("/users/{id}")
+    @ApiOperation("删除用户")
+    public CommonResult deleteUser(@PathVariable String id) {
+        return CommonResult.success(starterTestService.removeById(Long.parseLong(id)));
+    }
+
 }
 
 ```
+可以看到我们为每一个路由都添加了一个注解在解释，让我们看一下效果。注意，由于配置新的UI，路径变为了http://localhost:8080/doc.html
+![0001](/subject/layman-starter/02/0002.gif)
+截止到这里，我们就算简单的配置完成了Swagger2接口文档。

@@ -4,6 +4,7 @@ module.exports = [{
   children: [
     'layman-starter-01',
     'layman-starter-02',
+    'layman-starter-03',
   ]
 }, {
   title: '待定', // 必要的

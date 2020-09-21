@@ -213,18 +213,16 @@ public class LaymanJacksonWebConfig implements WebMvcConfigurer {
 我们得到的json数据如下
 ```json
 {
-    "code": 200,
+    "code": "200",
     "message": "操作成功",
-    "data": [
-        {
-            "id": 1,
-            "username": "layman",
-            "age": 30,
-            "email": "liuyang19900520@hotmail.com",
-            "test": null,
-            "test2": null
+    "data": {
+        "id": "1",
+        "username": "layman",
+        "test": {
+            "name": null,
+            "point": "234"
         }
-    ]
+    }
 }
 ```
 成功，自定义的过滤注解就算配置成功了，但是常规时候，我仍建议使用特定的返回值，比如自定义的VO，或者更加灵活的Map，亦或者采用Wapper的基类对于返回值进行包装。根据实际情况我们再来讨论。

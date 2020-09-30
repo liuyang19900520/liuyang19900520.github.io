@@ -3,8 +3,9 @@ title: 自定义@ResponseBody注解实现灵活json返回
 categories: 
  - Spring Boot
 tags:
- - Spring Boot json
-date: 2020-09-11
+ - Spring Boot 
+ - json
+date: 2020-09-14
 ---
 
 工作中有时候我们会遇到一些情况，2个不同的api，返回的数据属于同一张表，但是是这一张表中的不同字段。实现的方式有很多，今天我们就在自己的这个小项目中集成一个自定义注解来实现上述功能。

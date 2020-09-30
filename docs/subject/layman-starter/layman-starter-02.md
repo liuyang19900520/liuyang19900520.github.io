@@ -3,7 +3,8 @@ title: 使用Swagger2为项目添加API文档
 categories: 
  - Spring Boot
 tags:
- - Spring Boot Swagger2
+ - Spring Boot 
+ - Swagger2
 date: 2020-09-11
 ---
 

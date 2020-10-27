@@ -130,4 +130,96 @@ public class BizException extends RuntimeException {
 
 截止到现在，我们就可以实现了一个简单的全局异常抓取的工作，手动定义的的异常和意料外错误的遗产均能够捕获并按照我们的期望返回。
 
+## 20201023修改
+在随后的开发过程中，我们修改了一下ExceptionHandler的内容，将之前一个方法改变为多个方法，拦截不同类型Exception
+```java
+@ControllerAdvice
+@Slf4j
+@Order(-100)
+public class LaymanExceptionHandler {
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public CommonResult handleValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
+
+        return CommonResult.failed(AResultCode.COMMON_400_ERROR, createErrorDetail(request, e));
+    }
+
+    /**
+     * 认证异常--认证失败（账号密码错误，账号被冻结，token过期等）
+     */
+    @ExceptionHandler(AuthException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public CommonResult unAuth(HttpServletRequest request, AuthException e) {
+
+        return CommonResult.failed(AResultCode.COMMON_401_ERROR, createErrorDetail(request, e));
+    }
+
+    /**
+     * 认证异常--没有访问权限
+     */
+    @ExceptionHandler(PermissionException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public CommonResult permissionException(HttpServletRequest request, PermissionException e) {
+        return CommonResult.failed(AResultCode.COMMON_403_ERROR, createErrorDetail(request, e));
+    }
+
+    /**
+     * 404
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public CommonResult notFoundException(HttpServletRequest request, NoHandlerFoundException e) {
+        return CommonResult.failed(AResultCode.COMMON_404_ERROR, createErrorDetail(request, e));
+    }
+
+    /**
+     * 拦截业务异常
+     */
+    @ExceptionHandler(BizException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
+    public CommonResult businessException(HttpServletRequest request, BizException e) {
+        return CommonResult.failed(AResultCode.COMMON_A_ERROR, createErrorDetail(request, e));
+    }
+
+    /**
+     * 拦截未知的运行时异常
+     */
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public CommonResult internalException(HttpServletRequest request, RuntimeException e) {
+        return CommonResult.failed(BResultCode.COMMON_B_ERROR, createErrorDetail(request, e));
+    }
+
+
+    /**
+     * 创建error详细
+     *
+     * @param request
+     * @param e
+     * @return map
+     */
+    private HashMap<Object, Object> createErrorDetail(HttpServletRequest request, Exception e) {
+
+        StackTraceElement stackTraceElement = e.getStackTrace()[0];
+        HashMap<Object, Object> error = MapUtil.newHashMap();
+        error.put("path", request.getServletPath());
+        error.put("className", stackTraceElement.getClassName());
+        error.put("methodName", stackTraceElement.getMethodName());
+        error.put("line", stackTraceElement.getLineNumber());
+        error.put("detail", e.getMessage());
+
+        return error;
+    }
+
+```
+我们可以看到，在获取不同类型的Exception上，我们分别采用不同方法来拦截。并且我们创建了一些固定类型的Exception来代表不同的业务，并且回复了相应的HTTPStatusCode。 
+同时在Exception返回的具体业务中，我们也增加了一些内容使得我们的error更为具体。
+
 

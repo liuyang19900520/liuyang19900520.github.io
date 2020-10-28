@@ -5,6 +5,8 @@ module.exports = [{
     'layman-starter-01',
     'layman-starter-02',
     'layman-starter-03',
+    'layman-starter-04',    
+    'layman-starter-05',
   ]
 }, {
   title: '待定', // 必要的

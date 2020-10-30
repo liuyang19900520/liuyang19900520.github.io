@@ -288,6 +288,60 @@ public class LogManager {
 最后当我们在controller中模拟一个by zero的服务器异常的时候，我们就能够实现之前的入库预期。
 
 ## 日志AOP，记录请求和响应
-除了上面我们说的内容之外，我们还可以为日志添加一个AOP处理，旨在记录所有的请求的请求和响应。
+除了上面我们说的内容之外，我们还可以为日志添加一个AOP处理，旨在记录所有的请求的请求和响应。 
+从实现的角度来说，其实就是写一个aop的处理，将织入点设置为controller的所有方法，然后将这个方法参数和返回值分别用日志输出即可
+```java
+/**
+ * 日志拦截
+ *
+ * @author Max Liu
+ */
+@Aspect
+@Component
+@Order(-100)
+@Slf4j
+public class LogRoutingAspect {
+    /**
+     * 使用ThreadLocal最好是每次使用完就调用remove方法，将其删掉，避免先get后set的情况导致业务的错误。
+     */
+    ThreadLocal<Long> startTime = new ThreadLocal<>();
+
+    @Pointcut("execution(public * com.liuyang19900520.layman.starter.module..*.*Controller.*(..))"
+    )
+    private void controllerAspect() {
+    }
+
+    /**
+     * controller 请求参数
+     *
+     * @param joinPoint 请求
+     */
+    @Before(value = "controllerAspect()")
+    public void methodBefore(JoinPoint joinPoint) throws Exception {
+        startTime.set(System.currentTimeMillis());
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (requestAttributes != null) {
+            HttpServletRequest request = requestAttributes.getRequest();
+            log.info("==> Request URL:" + request.getRequestURL().toString());
+            log.info("==> Request Args:" + JSONUtil.toJsonStr(joinPoint.getArgs()));
+        } else {
+            throw new Exception("requestAttributes is null");
+        }
+    }
+
+    /**
+     * controller 返回内容
+     *
+     * @param o 返回值
+     */
+    @AfterReturning(returning = "o", pointcut = "controllerAspect()")
+    public void methodAfterReturning(Object o) {
+        log.info("<== Response Full Type Contents :" + JSONUtil.toJsonStr(o));
+        log.info("<== Response SpendTime:" + (System.currentTimeMillis() - startTime.get()));
+        startTime.remove();
+    }
+}
+```
+通过上面的配置，我们能够时刻获得我们的请求和响应的内容，当然这是对于单机的情况，如果是符合集群的情况，我们还需要其他的修改和配置。我们后续再探讨。
 
 

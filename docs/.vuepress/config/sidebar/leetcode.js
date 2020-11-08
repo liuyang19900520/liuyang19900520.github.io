@@ -1,16 +1,13 @@
 module.exports = [{
-  title: '整体搭建', // 必要的
+  title: 'Sliding Window', // 必要的
   sidebarDepth: 1, // 可选的, 默认值是 1
   children: [
-    'layman-starter-01',
-    'layman-starter-02',
-    'layman-starter-03',
-    'layman-starter-04',    
-    'layman-starter-05',
-    'layman-starter-06',
+    'sliding-windows-detail',
+    '0053-Maximum-Subarray',
+    '0560-Subarray-Sum-Equals-K',
   ]
 }, {
-  title: '待定', // 必要的
+  title: 'Two Points,', // 必要的
   sidebarDepth: 1, // 可选的, 默认值是 1
   children: [
   ]

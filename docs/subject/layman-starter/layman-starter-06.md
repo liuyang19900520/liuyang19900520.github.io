@@ -227,6 +227,100 @@ public class JwtTokenUtil {
 3. @Validated注解是我们设置的一些验证，后续会介绍。
 
 ### Service中处理login的请求
+当我们回到serivce中的login方法，我们要做的就是如下几个件事。
+#### 获取用户信息和对应的资源
+```java
+@Override
+    public UserDetails loadUserByUsername(String username) {
+        //获取用户信息
+        UmsAdmin admin = getAdminByUsername(username);
+        if (admin != null) {
+            //获取对应的资源
+            List<UmsResource> resourceList = getResourceList(admin.getId());
+            return new AdminUserDetails(admin, resourceList);
+        }
+        throw new AuthException("用户名或密码错误");
+    }
+
+```
+而获取用户的途径也分为2钟，首先我们可以从缓存中获取，如果缓存中没有得到，我们再去数据库中去查询，并设置到缓存中。同理，getResourceList()方法获得资源的途径也分为数据库和缓存。
+```java
+public UmsAdmin getAdminByUsername(String username) {
+        UmsAdmin admin = adminCacheService.getAdmin(username);
+        if (admin != null) {
+            return admin;
+        }
+        QueryWrapper<UmsAdmin> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(UmsAdmin::getUsername, username);
+        List<UmsAdmin> adminList = list(wrapper);
+        if (adminList != null && adminList.size() > 0) {
+            admin = adminList.get(0);
+            adminCacheService.setAdmin(admin);
+            return admin;
+        }
+        return null;
+    }
+```
+
+#### password判断
+根据passwordEncoder对输入的密码进行hash化进行对比，如果不匹配抛出异常
+
+#### 将用户信息交由Spring Security管理
+```java
+UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+SecurityContextHolder.getContext().setAuthentication(authentication);     
+
+```
+#### 生成jwt token并返回
+使用jwt工具类生成token，做一些登录信息的更新和入库，最后将token返回。 
+以上这就是login逻辑的全部内容。我们尝试登录，已经可以成功登录了。
+
+### 授权判断
+刚刚我们事先了登录功能，并且并且对于该用户能够访问哪些资源都进行了获取，并且都存储在了Spring Security中，接下来我们就有必要根据访问路径的权限来判断该用户是否有资格访问。
+
+
+#### 权限过滤器
+``` java
+@Slf4j
+@Component
+public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain) throws ServletException, IOException {
+        String authHeader = request.getHeader(this.tokenHeader);
+        if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
+            // The part after "Bearer "
+            String authToken = authHeader.substring(this.tokenHead.length());
+            String username = jwtTokenUtil.getUserNameFromToken(authToken);
+            logger.info("checking username:{}" + username);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                if (jwtTokenUtil.validateToken(authToken, userDetails)) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    logger.info("authenticated user:{}" + username);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
+        }
+        chain.doFilter(request, response);
+    }
+}
+```
+这个过滤器，主要是将我们请求中的header抽出，如果存在的情况就进行健全判断，如果token被jwtUtil验证通过了，就可以访问到我们的controller，反之则不能。真是一个
+
+#### 权限拒绝处理
 
 
 

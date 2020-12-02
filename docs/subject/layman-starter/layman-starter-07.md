@@ -257,7 +257,15 @@ Process finished with exit code 0
   main:
     allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
 ```
-能出现时上面的情况，主要是我在写的过程中，没有删除掉原来javaConfig的注解，于是才产生了覆盖错误。碰巧这时候就能够
+能出现时上面的情况，主要是我在写的过程中，没有删除掉原来javaConfig的注解，于是才产生了覆盖错误。碰巧这个时间点，xml中setter中配置的requestMappingHandlerAdapter创建完成，又被javaConfig中@Autowired的RequestMappingHandlerAdapter给覆盖，让我们的这个注解的配置实现了功能。所以当我们去掉注解，按照正常的xml方式进行配置的时候，这个注解依旧是不好使的，因为我恩没有对requestMappingHandlerAdapter进行修改和覆盖。
+
+### 发现错误
+我们出现的错误信息是，mvcContentNegotiationManager这个类出现了重复引用的情况。而这个mvcContentNegotiationManager，应该是我们最初通过@Autowired来注入的requestMappingHandlerAdapter的依赖，requestMappingHandlerAdapter的依赖注入方式由constructor改为setter，怎么会影响mvcContentNegotiationManager呢？这显然是不合理的。于是我将xml的注入方式，有setter又改成了constructor，不出所料，还是可以正常实现功能。这样看来，就出现在了RequestMappingHandlerAdapter这个bean创建的时间点了。 
+找到了原因的同时，我们也尝试出了一个简单的解决办法，就是不等SpringMVC去实例化requestMappingHandlerAdapter，我们自己通过实例化来获得即可。
+### 解决办法
+搞了这么久，其实就是自己主动创建requestMappingHandlerAdapter即可。
+
+
 
 
 

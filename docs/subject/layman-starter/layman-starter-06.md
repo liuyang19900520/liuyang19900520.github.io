@@ -318,9 +318,34 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     }
 }
 ```
-这个过滤器，主要是将我们请求中的header抽出，如果存在的情况就进行健全判断，如果token被jwtUtil验证通过了，就可以访问到我们的controller，反之则不能。真是一个
+这个过滤器，主要是将我们请求中的header抽出，如果存在的情况就进行健全判断，如果token被jwtUtil验证通过了，就可以访问到我们的controller，反之则不能。
 
 #### 权限拒绝处理
+关于权限拒绝的处理办法，主要有2个方面，AccessDeniedHandler和AuthenticationEntryPoint。简单的讲，我们可以理解为AccessDeniedHandler是负责用来解决认证过的用户访问无权限资源时的异常。而AuthenticationEntryPoint 用来解决匿名用户访问无权限资源时的异常。下面截取了新增的自定义拒绝处理类部分。
+```java
+ // 任何请求需要身份认证
+        registry.and()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                // 关闭跨站请求防护及不使用session
+                .and()
+                .csrf()
+                .disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                // 自定义权限拒绝处理类
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(restfulAccessDeniedHandler)
+                .authenticationEntryPoint(restAuthenticationEntryPoint)
+                // 自定义权限拦截器JWT过滤器
+                .and()
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+```
+##### AuthenticationEntryPoint
+
+
 
 
 

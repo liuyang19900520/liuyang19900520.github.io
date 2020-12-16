@@ -263,8 +263,63 @@ Process finished with exit code 0
 我们出现的错误信息是，mvcContentNegotiationManager这个类出现了重复引用的情况。而这个mvcContentNegotiationManager，应该是我们最初通过@Autowired来注入的requestMappingHandlerAdapter的依赖，requestMappingHandlerAdapter的依赖注入方式由constructor改为setter，怎么会影响mvcContentNegotiationManager呢？这显然是不合理的。于是我将xml的注入方式，有setter又改成了constructor，不出所料，还是可以正常实现功能。这样看来，就出现在了RequestMappingHandlerAdapter这个bean创建的时间点了。 
 找到了原因的同时，我们也尝试出了一个简单的解决办法，就是不等SpringMVC去实例化requestMappingHandlerAdapter，我们自己通过实例化来获得即可。
 ### 解决办法
-搞了这么久，其实就是自己主动创建requestMappingHandlerAdapter即可。
+搞了这么久，其实就是自己主动创建requestMappingHandlerAdapter即可。这个解决办法，的确有些太简单了。
 
+### 一个彩蛋
+解决了上面所以循环依赖的错误之后，我们才真正迎来了一个看起来是循环依赖的问题。我们看一下下面的代码。
+
+```java
+@Slf4j
+public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
+…………
+…………
+}
+```
+
+```java
+public class LaymanSecurityConfig extends WebSecurityConfigurerAdapter {
+//    @Autowired(required = false)
+//    private DynamicSecurityService dynamicSecurityService;
+
+    @Autowired(required = false)
+    IgnoreUrlsConfig ignoreUrlsConfig;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+…………
+…………
+    @Bean
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
+        return new JwtAuthenticationTokenFilter();
+    }
+    
+    @Bean
+    public JwtTokenUtil jwtTokenUtil() {
+        return new JwtTokenUtil();
+    }
+
+…………
+…………
+}
+```
+
+我们的上面两个类，其中我们发现JwtAuthenticationTokenFilter的Bean创建，需要依赖奔雷中的JwtTokenUtil，这样就产生了真正意义上的循环依赖。
+其实这里面我们可以做一些结构就可以，比如将jwtAuthenticationTokenFilter的创建从该类中移除即可。
+
+截至到现在，我们应该已经解决了一个很小的问题。
 
 
 

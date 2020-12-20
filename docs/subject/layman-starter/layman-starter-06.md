@@ -344,6 +344,22 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 ```
 ##### AuthenticationEntryPoint
+使用场景是，比如我们输入了一条错误的token，那么这个异常被处理就是AuthenticationEntryPoint。
+
+##### AccessDeniedHandler
+如果我们输入错误的token，将不会进入到这个异常处理中。而当我们为这个请求添加一些权限验证时，则会返回到这个异常情况之中。 
+例如我们的系统中并不存在ADMINxx这个角色，而我们的代码中却需要如下请求的时候 
+```java
+ @ApiOperation(value = "用户注册")
+ @PreAuthorize("hasRole('ADMINxx')")
+ @RequestMapping(value = "/users", method = RequestMethod.POST)
+ @LaymanJson(type = UmsAdmin.class, include = "id,username")
+    public CommonResult<List<UmsAdmin>> list() {
+        List<UmsAdmin> list = adminService.list();
+        return CommonResult.success(list);
+    }
+```
+关于AccessDeniedHandler的内容我应该会专门写一篇内容。这篇文章太长了。就先到这里吧。
 
 
 

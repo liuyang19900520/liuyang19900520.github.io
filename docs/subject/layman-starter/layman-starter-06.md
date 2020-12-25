@@ -1,5 +1,5 @@
 ---
-title: 有必要做一个最简单的权限管理
+title: 006-有必要做一个最简单的权限管理
 categories: 
  - Spring Boot
 tags:

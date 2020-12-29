@@ -169,6 +169,10 @@ try {
         return configAttributes;
     }
 ```
+如果以我们测试访问的这个api：http://localhost:8080/ums/admin/users 为例子，我们会得到一个访问该路径需要得到的资源。经过debug后我们也能发现，这个资源就是【30 测试资源】
+
+
+
 
 
 

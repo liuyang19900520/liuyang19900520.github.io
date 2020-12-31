@@ -172,8 +172,88 @@ try {
 如果以我们测试访问的这个api：http://localhost:8080/ums/admin/users 为例子，我们会得到一个访问该路径需要得到的资源。经过debug后我们也能发现，这个资源就是【30 测试资源】
 
 
+### DynamicAccessDecisionManager
+然后我们再回过头去看调用父类的beforeInvocation方法中的this.accessDecisionManager.decide(authenticated, object, attributes);这一句。这就很好理解了，也就是说在这里会调用我们自定义的DynamicAccessDecisionManager汇总的decide方法。
+```java
+ // 当接口未被配置资源时直接放行
+        if (CollUtil.isEmpty(configAttributes)) {
+            return;
+        }
+        Iterator<ConfigAttribute> iterator = configAttributes.iterator();
+        while (iterator.hasNext()) {
+            ConfigAttribute configAttribute = iterator.next();
+            //将访问所需资源或用户拥有资源进行比对
+            String needAuthority = configAttribute.getAttribute();
+            for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
+                if (needAuthority.trim().equals(grantedAuthority.getAuthority())) {
+                    return;
+                }
+            }
+        }
+        throw new AccessDeniedException("抱歉，您没有访问权限");
+```
+这个方法并不难理解，主要就是判断我们这个url需要的资源和authentication.getAuthorities()中的资源是否能够匹配，如果可以匹配则通过，反之报异常。 
+那么问题来了，这个authentication在进行的设置呢？我们还是要回顾到beforeInvocation的这个方法中，其中的两个代码片段
+```java
+		Authentication authenticated = authenticateIfRequired();
 
+		// Attempt authorization
+		try {
+			this.accessDecisionManager.decide(authenticated, object, attributes);
+		}
+```
+上面的代码我们能够理解，authenticated是作为参数传递给DynamicAccessDecisionManager的，而获取的内容正是我们当前用户的Authentication信息，展开说就是取到我们SecurityContextHolder中存储的authentication信息，如果有就返回，如果没有就获取后设置并返回。
+```java
+	private Authentication authenticateIfRequired() {
+		Authentication authentication = SecurityContextHolder.getContext()
+				.getAuthentication();
 
+		if (authentication.isAuthenticated() && !alwaysReauthenticate) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Previously Authenticated: " + authentication);
+			}
+
+			return authentication;
+		}
+
+		authentication = authenticationManager.authenticate(authentication);
+
+		// We don't authenticated.setAuthentication(true), because each provider should do
+		// that
+		if (logger.isDebugEnabled()) {
+			logger.debug("Successfully Authenticated: " + authentication);
+		}
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		return authentication;
+	}
+```
+上面这种情况是在里设定的authentication呢？其实就是在我们的login service中，
+```java
+  UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            token = jwtTokenUtil.generateToken(userDetails);
+```
+```java
+    public UserDetails loadUserByUsername(String username) {
+        //获取用户信息
+        UmsAdmin admin = getAdminByUsername(username);
+        if (admin != null) {
+            //获取对应的资源
+            List<UmsResource> resourceList = getResourceList(admin.getId());
+            return new AdminUserDetails(admin, resourceList);
+        }
+        throw new AuthException("用户名或密码错误");
+    }
+```
+上面我们就能清楚的看到，登录的时候我们分别取到了这个用户的信息和其对应的资源信息。然后将这个资源放到了SecurityContextHolder的authentication中。
+
+最后做一个总结吧。 
+1. jwtAuthenticationTokenFilter负责验证token是否符合正确，而dynamicSecurityFilter负责验证该用户是否具有权限
+2. restAuthenticationEntryPoint负责token错误时返回的异常信息处理，而restfulAccessDeniedHandler负责的是不具备权限时返回的信息异常处理
+3. 在程序启动时，将url对应的url和拼接而成的资源id和name存入map中
+4. 在程序进行路由访问时，首先在DynamicSecurityMetadataSource获取访问该路径所需资源，然后在DynamicAccessDecisionManager中就对比的比较是否存在该权限，如果存在就通过。
 
 
 

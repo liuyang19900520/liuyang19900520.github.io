@@ -5,7 +5,7 @@ categories:
 tags:
  - Vue
  - Vue Router
-date: 2020-05-08
+date: 2020-04-08
 ---
 我以为Vuetify这个框架是响应式的，就不准备做pc和mobile两个版本了。但是由于我在pc版本上toolbar上放置了3个按钮，到mobile上就没能很好的适配成功，所以这次我不准备修改路由，也就是说，我希望一个url，通过pc和mobile两个版本访问的时候，能够返回2套不同的页面。  
 

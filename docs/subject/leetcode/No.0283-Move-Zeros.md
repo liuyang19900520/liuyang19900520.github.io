@@ -1,23 +1,24 @@
 ---
-title: 0053-Maximum-Subarray
+title: No.0283-Move-Zeros
 categories: 
  - LeetCode
 tags:
- - Sliding Window
+ - Array
 date: 2020-12-04
 ---
 
 ## 题目
 > Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
 
->Example :
+#### Example :
 >Input: Input: [0,1,0,3,12]
 >Output: [1,3,12,0,0]
 
->Note:
+#### Note:
 >1.You must do this in-place without making a copy of the array.
 >2.Minimize the total number of operations.
 ## 解答思路
+
 ### Python
 ```python
     def moveZeroes(self, nums: List[int]) -> None:

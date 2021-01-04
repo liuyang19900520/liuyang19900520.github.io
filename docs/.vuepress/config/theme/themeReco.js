@@ -30,6 +30,9 @@ module.exports = {
                 text: 'layman-starter(Spring Boot入门)',
                 link: '/subject/layman-starter/'
             },{
+                text: '我读Spring源码的随笔',
+                link: '/subject/spring-source/'
+            },{
                 text: 'LeetCode(放弃之旅)',
                 link: '/subject/leetcode/'
             }, ]

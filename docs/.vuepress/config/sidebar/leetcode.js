@@ -3,7 +3,8 @@ module.exports = [{
     sidebarDepth: 1, // 可选的, 默认值是 1
     children: [
       'No.0283-Move-Zeros',
-      'No.0011-Container-With-Most-Water'
+      'No.0011-Container-With-Most-Water',
+      'No.0070-Climbing-Stairs'
     ]
   }, {
     title: '滑动窗口', // 必要的

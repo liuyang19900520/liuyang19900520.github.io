@@ -78,7 +78,7 @@ refresh 的过程。我们只找一些相对简要，重点的部分来大概了
    …………
    之后的暂且省略，可以理解为都是为 beanFactory 配置属性。
 
-### BeanFactory 中国的 beanPostProcessors
+### BeanFactory 中的 beanPostProcessors
 
 在上面代码的第三步，addBeanPostProcessor()中，展开来看我们可以发现，就是为 beanPostProcessors 中添加了一个 ApplicationContextAwareProcessor 对象。
 这个 beanPostProcessors 中，是后置处理器的集合，在Spring的bean创建的过程中，会依次调用beanPostProcessors中的元素来插手创建过程。

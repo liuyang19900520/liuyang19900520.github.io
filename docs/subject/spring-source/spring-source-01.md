@@ -198,7 +198,7 @@ this.beanDefinitionNames.add(beanName);
 
 ## 实例化 ClassPathBeanDefinitionScanner
 ClassPathBeanDefinitionScanner，能够扫描一个类，并且转换成BeanDefinition。这里知识对着个scanner进行实例化。 
-后续我们来看扫描器的具体用处。
+这个scanner主要是向外部暴露一个方法，供用户自己实现扫描。而扫描包的工作，并不是这个scanner完成的。
 
 ## 一些 Spring 概念的自己理解
 

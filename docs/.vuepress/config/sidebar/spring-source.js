@@ -6,7 +6,6 @@ module.exports = [{
     'spring-source-02',
     'spring-source-03',
     'spring-source-04',
-
   ]
 },
 

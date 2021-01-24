@@ -1,5 +1,5 @@
 ---
-title: @Configuration到底起来什么作用
+title: Configuration到底起来什么作用
 categories:
   - Spring
 tags:

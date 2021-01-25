@@ -18,7 +18,9 @@ date: 2020-12-04
 >1. You must do this in-place without making a copy of the array.
 >2. Minimize the total number of operations.
 ## 解答思路
-
+双指针的方法，左指针指向的是已经处理好的数组的最后一项，右指针则指向待处理的数组的头部。右指针向右侧移动的过程中，遇到非零的元素是，将左侧指针的0与右侧指针交换
+1. 左指针左边均为非零数；
+2. 右指针左边直到左指针处均为零。
 ### Python
 ```python
     def moveZeroes(self, nums: List[int]) -> None:
@@ -43,6 +45,7 @@ date: 2020-12-04
                 j += 1
 
 ```
+### JavaScript
 ```js
 /**
  * @param {number[]} nums

@@ -1,11 +1,4 @@
----
-title: BeanFactory创建过程的个人理解（二）
-categories:
-  - Spring
-tags:
-  - Spring Framework
-date: 2021-01-20
----
+
 ```java
 		do {
 			StartupStep processConfig = this.applicationStartup.start("spring.context.config-classes.parse");

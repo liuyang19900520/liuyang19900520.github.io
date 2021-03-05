@@ -4,7 +4,7 @@ categories:
  - LeetCode
 tags:
  - LinkedList
-date: 2020-01-24
+date: 2021-01-24
 ---
 
 ## 题目
@@ -14,10 +14,7 @@ date: 2020-01-24
 > * Input: 1->2->3->4->5->NULL
 > * Output: 5->4->3->2->1->NULL
 
-### Python
-```python
 
-```
 ### JavaScript
 ```js
 /**

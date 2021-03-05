@@ -7,7 +7,9 @@ module.exports = [{
       'No.0070-Climbing-Stairs',
       'No.0015-3-Sum',
       'No.0206-Reverse-Linked-List',
-      'No.0024-Swap-Nodes-in-Pairs'
+      'No.0024-Swap-Nodes-in-Pairs',
+      'No.0001-Two-Sum'
+      
     ]
   }, {
     title: '滑动窗口', // 必要的

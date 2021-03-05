@@ -1,11 +1,3 @@
----
-title: Configuration到底起来什么作用
-categories:
-  - Spring
-tags:
-  - Spring Framework
-date: 2021-01-20
----
 
 通过之前的分析，我们可以在ConfigurationClassPostProcessor
 ```java

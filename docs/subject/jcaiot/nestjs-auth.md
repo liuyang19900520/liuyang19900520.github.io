@@ -1,4 +1,11 @@
-# NestJS进行权限设置
+---
+title: NestJS进行权限设置
+categories: 
+ - NestJS
+tags:
+ - NestJS
+date: 2020-06-13
+---
 之前我们实现了简单的Api访问的，在整体的设计上，我们还需要一个权限的验证。也就是说为了进入到后台系统验证。
 由于我还是第一次做NestJS，所以我还是参考官网的一篇文章，[NestJS配置权限](https://docs.nestjs.cn/6/techniques?id=%e8%ae%a4%e8%af%81%ef%bc%88authentication%ef%bc%89)。
 

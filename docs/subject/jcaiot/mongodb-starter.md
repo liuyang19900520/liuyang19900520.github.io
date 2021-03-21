@@ -1,4 +1,11 @@
-# 配置简单的MongoDB
+---
+title: 配置简单的MongoDB
+categories: 
+ - MongoDB
+tags:
+ - MongoDB
+date: 2020-08-09
+---
 
 由于没有系统的学习过数据相关知识，我的数据库知识很薄弱，主要是基础关系型数据Mysql5.7的一些简单的CRUD,稍微上一些难度我就不具备水平了。趁着这个练习的项目不紧张，也没什么要求的时候，我尝试使用MongoDB这款NoSQL。
 

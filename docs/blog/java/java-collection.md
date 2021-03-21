@@ -1,4 +1,7 @@
-# Java知识的收藏夹
+---
+title: Java知识的收藏夹
+date: 2021-01-11
+---
 ## Java综合基础
 * Java基础：[Java Guide 学习面试指南](https://snailclimb.gitee.io/javaguide/#/?id=java)
 * 设计模式：[GoF 的 23 种设计模式](http://c.biancheng.net/view/1317.html)

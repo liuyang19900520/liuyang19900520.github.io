@@ -1,4 +1,12 @@
-# 设计Vue端API请求模块
+---
+title: 设计Vue端API请求模块
+categories: 
+ - Vue
+tags:
+ - Vue
+date: 2020-08-09
+---
+
 
 之前我们在[配置简单的NestJS](https://www.liuyang19900520.com/subject/jcaiot/nestjs-starter.html) 中为服务端实现了跨域请求，这次我们设计一个客户端的Api请求模块。
 

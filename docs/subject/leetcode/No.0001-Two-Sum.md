@@ -46,3 +46,25 @@ You can return the answer in any order.
                 # 返回数组中当前元素的下标，以及数组中目标元素的下标
                 return [nums.index(nums[i]), nums.index(complement)]
 ```
+### JavaScript
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+    const comp = {};
+    // 循环数组
+    for(let i=0; i<nums.length; i++){
+        //判断comp中是否存在当前index对应的num对象，如果有就返回数组
+        //该数组就是元素目标数组
+        if(comp[nums[i] ]>=0){
+            return [ comp[nums[i] ] , i]
+        }
+        //将当前循环的下标i作为值放入comp中，对应的key为当前index对应元素num
+        comp[target-nums[i]] = i
+    }
+};
+```
+

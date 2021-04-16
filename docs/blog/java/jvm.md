@@ -87,9 +87,63 @@ date: 2021-03-09
 5. 执行init方法：程序意义上的初始化。执行构造方法。
 
 ### 对象内存分配
+> 图片链接来自[https://www.processon.com/view/603a066de401fd20fbc16e70?fromnew=1](Java对象内存分配流程) 
+
+![0001](/blog/java/jvm/jvm0002.png)
 #### 对象栈上分配
 JVM通过逃逸分析确定该对象不会被外部访问。如果不会逃逸可以将该对象在栈上分配内存，这样该对象所占用的内存空间就可以随栈帧出栈而销毁，就减轻了垃圾回收的压力。
-> 对象逃逸分析:就是分析对象动态作用域，当一个对象在方法中被定义后，它可能被外部方法所引用，例如作为调用参数传递到其他地方中。
+* 对象逃逸分析:就是分析对象动态作用域，当一个对象在方法中被定义后，它可能被外部方法所引用，例如作为调用参数传递到其他地方中。比如一个void方法得到的对象，没有其他调用，就可以直接分配到栈内存里。JDK1.7以后默认开启
+* 标量替换：标量可以理解成一种不可分解的变量，如java内部的基本数据类型、引用类型等。 与之对应的聚合量是可以被拆解的，如对象。当通过逃逸分析一个对象只会作用于方法内部，虚拟机可以通过使用标量替换来进行优化。
 
+#### 堆内存分区
+![0003](/blog/java/jvm/jvm0003.png)
+大量的对象被分配在eden区，eden区满了后会触发minor gc，可能会有99%以上的对象成为垃圾被回收掉，剩余存活的对象会被挪到为空的那块survivor区。 
+下一次eden区满了后又会触发minor gc，把eden区和survivor区垃圾对象回收，把剩余存活的对象一次性挪动到另外一块为空的survivor区。 
+所以JVM默认的Eden与Survivor区默认8:1:1。应该让让eden区尽量的大，survivor区够用即可 
+JVM默认有这个参数-XX:+UseAdaptiveSizePolicy(默认开启)，会导致这个8:1:1比例自动变化。 
+
+#### 对象进入老年代各种情况
+1. 正常情况；虚拟机给每个对象一个对象年龄(Age)计数器。如果对象在 eden 出生并经过第一次 Minor GC 后仍然能够存活，并且能被 Survivor 容纳的话，将被移动到 Survivor空间中，并将对象年龄设为1。 对象在 Survivor 中每熬过一次 MinorGC，年龄就增加1岁，当它的年龄增加到一定程度 (默认为15岁，CMS收集器默认6岁，不同的垃圾收集器会略微有点不同)，就会被晋升到老年代中。对象晋升到老年代 的年龄阈值，可以通过参数-XX:+MaxTenuringThreshold来设置。
+
+2. eden的空间不够了，虚拟机将发起一次Minor GC，GC期间虚拟机又发现分配的对象无法存入Survior空间，所以只好把新生代的对象提前转移到老年代中去
+3. 大对象，通过-XX:PretenureSizeThreshold=字节数 来配置对象，如果返现大于该字节数的对象就直接放入老年代。
+4. 对象动态年龄判断：在survivor区中，年龄从低到高开始排序计算，内存总大小的50%，可以通过-XX:TargetSurvivorRatio指定。那么这是大于等于这些对象中年龄最大值的对象，就可以直接进入老年代。其实就是，每次minor gc已经不能完整清空50%的survivor空间了，为了使长期存过的对象尽早进入老年代。
+5. 空间分配担保：年轻代每次minor gc之前JVM都会计算下老年代剩余可用空间 如果这个可用空间小于年轻代里现有的所有对象大小之和(包括垃圾对象)，就会看一个“-XX:-HandlePromotionFailure”(jdk1.8默认就设置了)的参数是否设置了。如果有这个参数，就会看看老年代的可用内存大小，是否大于之前每一次minor gc后进入老年代的对象的平均大小。 如果上一步结果是小于或者之前说的参数没有设置，那么就会触发一次Full gc，对老年代和年轻代一起回收一次垃圾， 如果回收完还是没有足够空间存放新的对象就会发生"OOM"当然，如果minor gc之后剩余存活的需要挪动到老年代的对象大小还是大于老年代可用空间，那么也会触发full gc，full gc完之后如果还是没有空间放minor gc之后的存活对象，则也会发生“OOM”
+![0004](/blog/java/jvm/jvm0004.png)
+
+### 内存回收
+
+#### 引用计数法
+给对象中添加一个引用计数器，每当有一个地方引用它，计数器就加1;当引用失效，计数器就减1;任何时候计数器为0的对象就是不可能再被使用的。 这个方法实现简单，效率高，但是目前主流的虚拟机中并没有选择这个算法来管理内存，其最主要的原因是它很难解决 对象之间相互循环引用的问题。
+
+#### 可达性分析算法
+将“GC Roots” 对象作为起点，从这些节点开始向下搜索引用的对象，找到的对象都标记为非垃圾对象，其余未标记的 对象都是垃圾对象 
+GC Roots根节点:线程栈的本地变量、静态变量、本地方法栈的变量等等
+
+* 软引用的应用
+将对象用SoftReference软引用类型的对象包裹，正常情况不会被回收，但是GC做完后发现释放不出空间存放 新的对象，则会把这些软引用的对象回收掉。软引用可用来实现内存敏感的高速缓存。
+Mybatis缓存里的实例
+```java
+public Object getObject(Object key) {
+    Object result = null;
+    SoftReference<Object> softReference = (SoftReference)this.delegate.getObject(key);
+    if (softReference != null) {
+        result = softReference.get();
+        if (result == null) {
+            this.delegate.removeObject(key);
+        } else {
+            synchronized(this.hardLinksToAvoidGarbageCollection) {
+                this.hardLinksToAvoidGarbageCollection.addFirst(result);
+                if (this.hardLinksToAvoidGarbageCollection.size() > this.numberOfHardLinks) {
+                    this.hardLinksToAvoidGarbageCollection.removeLast();
+                }
+            }
+        }
+    }
+    return result;
+}
+```
+* finalize自救
+可达性分析后发现没有与GC Roots相连接的引用链的情况下，第一次标记这个对象，如果对象没有复写finalize的话，直接回收，如果复写了，我们可以在finalize方法中进行自救，也就是说让他重新与引用链创建关联。而这个finalize只能执行一次。不能多次自救。
 
 

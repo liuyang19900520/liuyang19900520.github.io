@@ -146,4 +146,6 @@ public Object getObject(Object key) {
 * finalize自救
 可达性分析后发现没有与GC Roots相连接的引用链的情况下，第一次标记这个对象，如果对象没有复写finalize的话，直接回收，如果复写了，我们可以在finalize方法中进行自救，也就是说让他重新与引用链创建关联。而这个finalize只能执行一次。不能多次自救。
 
+## 工具
+
 

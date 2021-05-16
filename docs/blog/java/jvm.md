@@ -146,6 +146,37 @@ public Object getObject(Object key) {
 * finalize自救
 可达性分析后发现没有与GC Roots相连接的引用链的情况下，第一次标记这个对象，如果对象没有复写finalize的话，直接回收，如果复写了，我们可以在finalize方法中进行自救，也就是说让他重新与引用链创建关联。而这个finalize只能执行一次。不能多次自救。
 
+### 常量池
+Class常量池可以理解为是Class文件中的资源仓库。 Class文件中除了包含类的版本、字段、方法、接口等描述信息外， 还有一项信息就是常量池(constant pool table)，用于存放编译期生成的各种字面量(Literal)和符号引用(Symbolic References)。可以通过javap -v 生成可读的JVM字节码指令文件。
+* 字面量
+由字母、数字等构成的字符串或者数值常量
+* 符号引用
+    * 类和接口的全限定名
+    * 字段的名称和描述符
+    * 方法的名称和描述符
+这些常量池现在是静态信息，只有到运行时被加载到内存后，这些符号才有对应的内存地址信息，这些常量池一旦被装入内存就变成运行时常量池，对应的符号引用在程序加载或运行时会被转变为被加载到内存区域的代码的直接引用，也就是我们说的动态链接了。
+* 字符串常量池
+    * String s= "abc"; 直接创建在常量池中，返回常量池中的引用
+    * String s= new String("abc"); 在常量池和堆中都有这个对象，最后返回堆中这个对象。
+
 ## 工具
+* Jmap
+可以查看一些内存信息，比如堆信息，输出堆的dump文件等等。
+* Jstack
+可以通过PID监测死锁，或者将PID调整为16进制，通过grep -A来检查CPU情况。
+* Jinfo
+查看正在运行的Java应用程序的扩展参数
+* Jstat
+jstat命令可以查看堆内存各部分的使用量，以及加载类的数量。 
+可以通过最常用jstat -gc pid 1000 10 (每隔1秒执行1次命令，共执行10次) ，可以评估程序内存使用及GC压力整体情况,优化思路其实简单来说就是尽量让每次Young GC后的存活对象小于Survivor区域的50%，都留存在年轻代里。尽量别让对象进入老年代。尽量减少Full GC的频率，避免频繁Full GC对JVM性能的影响。
+* Arthas
+Arthas 是Alibaba开源的Java诊断工具.
+[https://arthas.aliyun.com/doc/arthas-tutorials.html?language=cn&id=arthas-basics](Arthas 用户文档) 
+* GCeasy
+负责分析GC Log的网站
+[https://gceasy.io/](GCeasy)
+
+
+
 
 

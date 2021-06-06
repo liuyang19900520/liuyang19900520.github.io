@@ -1,5 +1,5 @@
 ---
-title: JVM的学习笔记
+title: JVM学习笔记
 categories: 
  - Java
 tags:

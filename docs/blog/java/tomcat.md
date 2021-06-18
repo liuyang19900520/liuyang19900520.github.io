@@ -8,6 +8,19 @@ tags:
 date: 2021-05-01
 ---
 
+## Tomcat 总体架构
+* 处理 Socket 连接，负责网络字节流与 Request 和 Response 对象的转化。也就是连接器。
+* 加载和管理 Servlet，以及具体处理 Request 请求。也就是容器
+
+### 连接器
+* 网络通信。即EndPoint。
+* 应用层协议解析。Processor。
+* Tomcat Request/Response 与 ServletRequest/ServletResponse 的转化。Adapter。
+
+其中 Endpoint 和 Processor 放在一起抽象成了 ProtocolHandler 组件
+![0003](/blog/java/tomcat/tomcat3.png =700x320)
+### 容器
+
 ## Tomcat启动的分析
 ### Tomcat各组件
 ![0001](/blog/java/tomcat/tomcat1.png =700x480)

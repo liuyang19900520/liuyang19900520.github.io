@@ -17,7 +17,7 @@ date: 2021-06-01
 | 底层实现| 数组 | 链表 | Hash表 |
 | IO效率| 每次掉用都进行线性遍历，事件负责度为O(n) | 每次掉用都进行线性遍历，事件负责度为O(n)  | 时间通知的方式，当IO时间准备就绪，调用回调函数，时间复杂度O(1)|
 | 最大连接| 有上限 | 无上限 | 无上限 |
-![0001](/blog/java/tomcat/nio1.png =700x480)
+![0001](/blog/java/nio1.png =700x480)
 
 * channel 类似于流，每个 channel 对应一个 buffer缓冲区，buffer 底层就是个数组
 * channel 会注册到 selector 上，由 selector 根据 channel 读写事件的发生将其交由某个空闲的线程处理 
@@ -193,7 +193,7 @@ public class NioClient {
 }
 
 ```
-![0001](/blog/java/tomcat/nio2.png =700x480)
+![0001](/blog/java/nio2.png =700x480)
 
 
 

@@ -24,6 +24,20 @@ date: 2021-05-26
 1. 创建Selector，注册事件。
 2. 事件发生，创建线程从Channel中读数据。
 
+```java
+if (getExecutor() == null) {
+    createExecutor();
+}
+initializeConnectionLatch();
+// Start poller thread
+poller = new Poller();
+Thread pollerThread = new Thread(poller, getName() + "-ClientPoller");
+pollerThread.setPriority(threadPriority);
+pollerThread.setDaemon(true);
+pollerThread.start();
+startAcceptorThread();
+```
+
 ### LimitLatch
 主要负责最大连接数，当连接数到达最大时阻塞线程，直到后续组件处理完一个连接后将连接数减 1。请你注意到达最大连接数后操作系统底层还是会接收客户端连接，但用户层已经不再接收。
 关于并发的部分，我们可以看到内部类 Sync扩展了AbstractQueuedSynchronizer，用他来控制线程的堵塞和唤醒。

@@ -220,3 +220,7 @@ TaskQueue 扩展了 Java 中的 LinkedBlockingQueue,并且通过maxQueueSize来�
      */
     private final AtomicInteger submittedCount = new AtomicInteger(0);
 ```
+
+## SynchronizedStack
+比如 Tomcat请求的数量很多，为了处理单个请求需要创建不少的复杂对象（比如 Tomcat 连接器中 SocketWrapper 和 SocketProcessor），而且一般来说请求处理的时间比较短，一旦请求处理完毕，这些对象就需要被销毁，所以tomcat使用了SynchronizedStack。这个栈中分别定义了synchronized的pop push expend方法，用来获得，添加，以及扩容。 
+在多个线程中可以同时对于SynchronizedStack中的对象进行操作，会有一定的同步开销。但如果不使用对象池的话，反复的创建和销毁也会造成比较大的开销。

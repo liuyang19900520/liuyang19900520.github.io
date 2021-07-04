@@ -528,6 +528,334 @@ tomcat本身也是一个java应用程序，CatalinaClassloader专门负责加载
 所以当Spring启动，需要加载业务类的时候，就会在私有线程里把业务类取出来并去WebappClassLoader指定的路径来加载。
 
 
+## Servlet管理
+
+### servlet调用
+StandardContextValve的invoke方法，Context 容器的 BasicValve 会调用 Wrapper 容器中 Pipeline 中的第一个 Valve，然后会调用到 StandardWrapperValve的invoke方法。
+```java
+    @Override
+    public final void invoke(Request request, Response response)
+        throws IOException, ServletException {
+
+        // Initialize local variables we may need
+        boolean unavailable = false;
+        Throwable throwable = null;
+        // This should be a Request attribute...
+        long t1=System.currentTimeMillis();
+        requestCount.incrementAndGet();
+        StandardWrapper wrapper = (StandardWrapper) getContainer();
+        Servlet servlet = null;
+        Context context = (Context) wrapper.getParent();
+
+        // Check for the application being marked unavailable
+        if (!context.getState().isAvailable()) {
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
+                           sm.getString("standardContext.isUnavailable"));
+            unavailable = true;
+        }
+
+        // Check for the servlet being marked unavailable
+        if (!unavailable && wrapper.isUnavailable()) {
+            container.getLogger().info(sm.getString("standardWrapper.isUnavailable",
+                    wrapper.getName()));
+            long available = wrapper.getAvailable();
+            if ((available > 0L) && (available < Long.MAX_VALUE)) {
+                response.setDateHeader("Retry-After", available);
+                response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
+                        sm.getString("standardWrapper.isUnavailable",
+                                wrapper.getName()));
+            } else if (available == Long.MAX_VALUE) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND,
+                        sm.getString("standardWrapper.notFound",
+                                wrapper.getName()));
+            }
+            unavailable = true;
+        }
+
+        // Allocate a servlet instance to process this request
+        try {
+            if (!unavailable) {
+                servlet = wrapper.allocate();
+            }
+        } catch (UnavailableException e) {
+            container.getLogger().error(
+                    sm.getString("standardWrapper.allocateException",
+                            wrapper.getName()), e);
+            long available = wrapper.getAvailable();
+            if ((available > 0L) && (available < Long.MAX_VALUE)) {
+                response.setDateHeader("Retry-After", available);
+                response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
+                           sm.getString("standardWrapper.isUnavailable",
+                                        wrapper.getName()));
+            } else if (available == Long.MAX_VALUE) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND,
+                           sm.getString("standardWrapper.notFound",
+                                        wrapper.getName()));
+            }
+        } catch (ServletException e) {
+            container.getLogger().error(sm.getString("standardWrapper.allocateException",
+                             wrapper.getName()), StandardWrapper.getRootCause(e));
+            throwable = e;
+            exception(request, response, e);
+        } catch (Throwable e) {
+            ExceptionUtils.handleThrowable(e);
+            container.getLogger().error(sm.getString("standardWrapper.allocateException",
+                             wrapper.getName()), e);
+            throwable = e;
+            exception(request, response, e);
+            servlet = null;
+        }
+
+        MessageBytes requestPathMB = request.getRequestPathMB();
+        DispatcherType dispatcherType = DispatcherType.REQUEST;
+        if (request.getDispatcherType()==DispatcherType.ASYNC) dispatcherType = DispatcherType.ASYNC;
+        request.setAttribute(Globals.DISPATCHER_TYPE_ATTR,dispatcherType);
+        request.setAttribute(Globals.DISPATCHER_REQUEST_PATH_ATTR,
+                requestPathMB);
+        // Create the filter chain for this request
+        ApplicationFilterChain filterChain =
+                ApplicationFilterFactory.createFilterChain(request, wrapper, servlet);
+
+        // Call the filter chain for this request
+        // NOTE: This also calls the servlet's service() method
+        Container container = this.container;
+        try {
+            if ((servlet != null) && (filterChain != null)) {
+                // Swallow output if needed
+                if (context.getSwallowOutput()) {
+                    try {
+                        SystemLogHandler.startCapture();
+                        if (request.isAsyncDispatching()) {
+                            request.getAsyncContextInternal().doInternalDispatch();
+                        } else {
+                            filterChain.doFilter(request.getRequest(),
+                                    response.getResponse());
+                        }
+                    } finally {
+                        String log = SystemLogHandler.stopCapture();
+                        if (log != null && log.length() > 0) {
+                            context.getLogger().info(log);
+                        }
+                    }
+                } else {
+                    if (request.isAsyncDispatching()) {
+                        request.getAsyncContextInternal().doInternalDispatch();
+                    } else {
+                        filterChain.doFilter
+                            (request.getRequest(), response.getResponse());
+                    }
+                }
+
+            }
+        } catch (ClientAbortException | CloseNowException e) {
+            if (container.getLogger().isDebugEnabled()) {
+                container.getLogger().debug(sm.getString(
+                        "standardWrapper.serviceException", wrapper.getName(),
+                        context.getName()), e);
+            }
+            throwable = e;
+            exception(request, response, e);
+        } catch (IOException e) {
+            container.getLogger().error(sm.getString(
+                    "standardWrapper.serviceException", wrapper.getName(),
+                    context.getName()), e);
+            throwable = e;
+            exception(request, response, e);
+        } catch (UnavailableException e) {
+            container.getLogger().error(sm.getString(
+                    "standardWrapper.serviceException", wrapper.getName(),
+                    context.getName()), e);
+            //            throwable = e;
+            //            exception(request, response, e);
+            wrapper.unavailable(e);
+            long available = wrapper.getAvailable();
+            if ((available > 0L) && (available < Long.MAX_VALUE)) {
+                response.setDateHeader("Retry-After", available);
+                response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
+                           sm.getString("standardWrapper.isUnavailable",
+                                        wrapper.getName()));
+            } else if (available == Long.MAX_VALUE) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND,
+                            sm.getString("standardWrapper.notFound",
+                                        wrapper.getName()));
+            }
+            // Do not save exception in 'throwable', because we
+            // do not want to do exception(request, response, e) processing
+        } catch (ServletException e) {
+            Throwable rootCause = StandardWrapper.getRootCause(e);
+            if (!(rootCause instanceof ClientAbortException)) {
+                container.getLogger().error(sm.getString(
+                        "standardWrapper.serviceExceptionRoot",
+                        wrapper.getName(), context.getName(), e.getMessage()),
+                        rootCause);
+            }
+            throwable = e;
+            exception(request, response, e);
+        } catch (Throwable e) {
+            ExceptionUtils.handleThrowable(e);
+            container.getLogger().error(sm.getString(
+                    "standardWrapper.serviceException", wrapper.getName(),
+                    context.getName()), e);
+            throwable = e;
+            exception(request, response, e);
+        } finally {
+            // Release the filter chain (if any) for this request
+            if (filterChain != null) {
+                filterChain.release();
+            }
+
+            // Deallocate the allocated servlet instance
+            try {
+                if (servlet != null) {
+                    wrapper.deallocate(servlet);
+                }
+            } catch (Throwable e) {
+                ExceptionUtils.handleThrowable(e);
+                container.getLogger().error(sm.getString("standardWrapper.deallocateException",
+                                 wrapper.getName()), e);
+                if (throwable == null) {
+                    throwable = e;
+                    exception(request, response, e);
+                }
+            }
+
+            // If this servlet has been marked permanently unavailable,
+            // unload it and release this instance
+            try {
+                if ((servlet != null) &&
+                    (wrapper.getAvailable() == Long.MAX_VALUE)) {
+                    wrapper.unload();
+                }
+            } catch (Throwable e) {
+                ExceptionUtils.handleThrowable(e);
+                container.getLogger().error(sm.getString("standardWrapper.unloadException",
+                                 wrapper.getName()), e);
+                if (throwable == null) {
+                    exception(request, response, e);
+                }
+            }
+            long t2=System.currentTimeMillis();
+
+            long time=t2-t1;
+            processingTime += time;
+            if( time > maxTime) maxTime=time;
+            if( time < minTime) minTime=time;
+        }
+    }
+```
+1. servlet = wrapper.allocate(); 创建了servlet实例。
+2. ApplicationFilterChain filterChain = ApplicationFilterFactory.createFilterChain(request, wrapper, servlet);  为当前的请求建立了一个filter链。
+3. filterChain.doFilter(request.getRequest(),response.getResponse()); 调用这个 Filter 链。这个filter链中的最后一个负责调用servlet。
+
+### Filter
+* filter是在Context 容器用 Map 集合来保存 Filter。
+* filter链对应每一个请求，
+``` java
+    private void internalDoFilter(ServletRequest request,
+                                  ServletResponse response)
+        throws IOException, ServletException {
+
+        // Call the next filter if there is one
+        if (pos < n) {
+            ApplicationFilterConfig filterConfig = filters[pos++];
+            try {
+                Filter filter = filterConfig.getFilter();
+
+                if (request.isAsyncSupported() && "false".equalsIgnoreCase(
+                        filterConfig.getFilterDef().getAsyncSupported())) {
+                    request.setAttribute(Globals.ASYNC_SUPPORTED_ATTR, Boolean.FALSE);
+                }
+                if( Globals.IS_SECURITY_ENABLED ) {
+                    final ServletRequest req = request;
+                    final ServletResponse res = response;
+                    Principal principal =
+                        ((HttpServletRequest) req).getUserPrincipal();
+
+                    Object[] args = new Object[]{req, res, this};
+                    SecurityUtil.doAsPrivilege ("doFilter", filter, classType, args, principal);
+                } else {
+                    filter.doFilter(request, response, this);
+                }
+            } catch (IOException | ServletException | RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                e = ExceptionUtils.unwrapInvocationTargetException(e);
+                ExceptionUtils.handleThrowable(e);
+                throw new ServletException(sm.getString("filterChain.filter"), e);
+            }
+            return;
+        }
+
+        // We fell off the end of the chain -- call the servlet instance
+        try {
+            if (ApplicationDispatcher.WRAP_SAME_OBJECT) {
+                lastServicedRequest.set(request);
+                lastServicedResponse.set(response);
+            }
+
+            if (request.isAsyncSupported() && !servletSupportsAsync) {
+                request.setAttribute(Globals.ASYNC_SUPPORTED_ATTR,
+                        Boolean.FALSE);
+            }
+            // Use potentially wrapped request from this point
+            if ((request instanceof HttpServletRequest) &&
+                    (response instanceof HttpServletResponse) &&
+                    Globals.IS_SECURITY_ENABLED ) {
+                final ServletRequest req = request;
+                final ServletResponse res = response;
+                Principal principal =
+                    ((HttpServletRequest) req).getUserPrincipal();
+                Object[] args = new Object[]{req, res};
+                SecurityUtil.doAsPrivilege("service",
+                                           servlet,
+                                           classTypeUsedInService,
+                                           args,
+                                           principal);
+            } else {
+                servlet.service(request, response);
+            }
+        } catch (IOException | ServletException | RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            e = ExceptionUtils.unwrapInvocationTargetException(e);
+            ExceptionUtils.handleThrowable(e);
+            throw new ServletException(sm.getString("filterChain.servlet"), e);
+        } finally {
+            if (ApplicationDispatcher.WRAP_SAME_OBJECT) {
+                lastServicedRequest.set(null);
+                lastServicedResponse.set(null);
+            }
+        }
+    }
+
+```
+1. private ApplicationFilterConfig[] filters = new ApplicationFilterConfig[0]; Filter 链中存有filter数组，并且通过pos来储存当且filter被调用的位置信息。
+2. 通过pos < n 判断是否都调到了最后一个，开始顺序调用filter。其中filters[pos++]来实现filter链的顺序调用。这么做的原因是因为，每次调用的doFilter方法都是再执行chain.doFilter方法。
+3. servlet.service(request, response); filter链的最后就调用这个sevlet的service方法。
+
+
+### Listener
+
+和filter一样，Context 容器也通过数组和list来管理监听器。但是分成了2类。
+* 生命周期相关的监听器
+* 属性的变化的监听器
+```java
+// 监听属性值变化的监听器
+private List<Object> applicationEventListenersList = new CopyOnWriteArrayList<>();
+ 
+// 监听生命事件的监听器
+private Object applicationLifecycleListenersObjects[] = new Object[0];
+```
+
+监听器的触发，以ServletContextListener为例子，在Context的启动方法中，其中代用了一个listenerStart方法，其中调用了listener的方法，这里的 ServletContextListener 接口是一种留给用户的扩展机制，用户可以实现这个接口来定义自己的监听器，监听 Context 容器的启停事件。比如可以自定义加载缓存等等。
+```java
+  ServletContextListener lr = (ServletContextListener) instances[i];
+   lr.contextInitialized(event);
+```
+
+最后关于Spring与Tomcat的整合部分，找到一篇比较好的文章作为参考。
+* [Spring Boot 中的 Tomcat 是如何启动的？](https://www.cnblogs.com/javastack/p/13037222.html)
+
 
 
 

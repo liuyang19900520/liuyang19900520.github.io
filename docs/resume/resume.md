@@ -59,7 +59,7 @@ date: 2021-09-28
 
 ## 个人PR 
 * [个人博客 https://www.liuyang19900520.com](https://www.liuyang19900520.com)
-* [个人简历（中文） https://www.liuyang19900520.com](https://www.liuyang19900520.com)
+* [个人简历（中文）https://www.liuyang19900520.com/resume/resume.html](https://www.liuyang19900520.com/resume/resume.html)
 
 <style >
 table, tr {

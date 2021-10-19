@@ -1,5 +1,9 @@
 ---
 title: Vue 数据代理和数据劫持
+categories: 
+ - Vue
+tags:
+ - Vue
 date: 2021-06-18
 ---
 
@@ -72,12 +76,30 @@ Object.defineProperty(data,'a',{
       });
     }
 ```
-![0001](/blog/vue/vm_data2.png =700x480)
+![0001](/blog/vue/vm_data2.png =700x300)
+
 通过效果我们可以看到，只要vm实例中的_data中的属性发生了改变，vue就在set方法调用的时候，重新解析模板，生成虚拟dom等等操作来实现响应式。
 
 上面的代码是我们的模拟的fakeVm，如果真正的Vue实例的话，由于对data中的数据进行了数据代理，也就是说只要操作vue实例上的属性，就等于操作_data中的属性，就可以实现响应式。
 
 
 ## 关于数据监听需要注意的两种场景
-1. Vue.set()方法的使用：如果我们直接对vm添加属性，是没有办法实现页面响应式的。道理很简单，因为data中的数据都进行了数据代理和数据劫持，我们直接操作vm，是没有办法操作其对应的getter，setter方法的，对于这种情况，可以使用Vue.set的api。
->>> 向响应式对象中添加一个 property，并确保这个新 property 同样是响应式的，且触发视图更新。它必须用于向响应式对象上添加新 property，因为 Vue 无法探测普通的新增 property (比如 this.myObject.newProperty = 'hi')
+1. Vue.set()方法的使用： 
+如果我们直接对vm添加属性，是没有办法实现页面响应式的。道理很简单，因为data中的数据都进行了数据代理和数据劫持，我们直接操作vm，是没有办法操作其对应的getter，setter方法的，对于这种情况，可以使用Vue.set的api。
+> 向响应式对象中添加一个 property，并确保这个新 property 同样是响应式的，且触发视图更新。它必须用于向响应式对象上添加新 property，因为 Vue 无法探测普通的新增 property (比如 this.myObject.newProperty = 'hi') 
+> * 注意对象不能是 Vue 实例，或者 Vue 实例的根数据对象。
+
+2. 数组的监听
+> Vue 不能检测以下数组的变动：
+> 1. 当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue
+> 2. 当你修改数组的长度时，例如：vm.items.length = newLength
+
+我们知道实现响应式可以粗浅的理解为在setter方法中重新解析模板，实现dom重新生成等等。而对于数组对象，Vue实现数据劫持的方法也就是生成了数组的setter，并没有数组中各个index对象的setter。不过Vue对于如下7个Api进行了包装，如果通过以下7个Api对数组进行了操作，将实现响应式。
+
+> * push()
+> * pop()
+> * shift()
+> * unshift()
+> * splice()
+> * sort()
+> * reverse()

@@ -56,8 +56,10 @@ VueComponent函数，通过编写实例对象的标签，Vue会调用new VueComp
 * VueComponent.prototype === vc.__proto__
 * VueComponent.prototype === Vue.prototype.__proto__
 
-也就是说，VueComponent的原型对象也可以访问Vue原型上的属性和方法。参考下图（图片来自于b站尚硅谷Vue教程）
-[尚硅谷Vue2.0+Vue3.0全套教程丨vuejs从入门到精通](https://www.bilibili.com/video/BV1Zy4y1K7SH?p=59) 
+也就是说，VueComponent的原型对象也可以访问Vue原型上的属性和方法。  
+参考下图（图片来自于b站尚硅谷Vue教程） 
 ![0001](/blog/vue/vue_vuecompontent.png =700x480)
+
+[尚硅谷Vue2.0+Vue3.0全套教程丨vuejs从入门到精通](https://www.bilibili.com/video/BV1Zy4y1K7SH?p=59) 
 
 

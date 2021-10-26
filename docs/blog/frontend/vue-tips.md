@@ -26,3 +26,38 @@ key是虚拟DOM对象的标识，当数据源发生改变时，Vue会根据数�
 ## 关于Vue中函数的写法
 * 所有被Vue管理的函数，最好写成普通函数，这样this的指向是vm实例或者是组件实例对象。
 * 所有不被Vue管理的函数（定时器的回调函数，ajax等回调函数等等），最好写成箭头函数，这样this的指向是vm实例或者是组件实例对象。
+
+## 浅显的理解Vue和VueComponent的关系。
+虽然可以用java的理解方式把他们理解为类似继承的概念，但是在此之前还是可以先复习一个JavaScript的基础知识。
+
+在JavaScript中，如果我们定义一个构造函数，又通过这个构造函数创建了一个实例对象。
+那么这个函数的显示原型属性等于这个实例对象的隐式原型属性。
+```javascript
+  <script type="text/javascript">
+    function ProtoTypeTest() {
+      this.a = 1;
+      this.b = 2;
+    }
+
+    const pt = new ProtoTypeTest();
+
+    console.log(ProtoTypeTest.prototype); //显示原型属性
+    console.log(pt.__proto__); //隐式原型属性
+
+    // return true
+    console.log(ProtoTypeTest.prototype == pt.__proto__);
+  </script>
+```
+就是在上面这个结论的基础下，
+Vue函数，通过new Vue()创建了vm实例对象
+VueComponent函数，通过编写实例对象的标签，Vue会调用new VueComponent()来创建一个组件实例对象vc。
+
+* Vue.prototype === vm.__proto__
+* VueComponent.prototype === vc.__proto__
+* VueComponent.prototype === Vue.prototype.__proto__
+
+也就是说，VueComponent的原型对象也可以访问Vue原型上的属性和方法。参考下图（图片来自于b站尚硅谷Vue教程）
+[尚硅谷Vue2.0+Vue3.0全套教程丨vuejs从入门到精通](https://www.bilibili.com/video/BV1Zy4y1K7SH?p=59) 
+![0001](/blog/vue/vue_vuecompontent.png =700x480)
+
+

@@ -1,10 +1,10 @@
 ---
-title: Vue 组件传值的小总结
+title: Vue 组件传值的小总结（不使用Vuex）
 categories: 
  - Vue
 tags:
  - Vue
-date: 2021-07-15
+date: 2021-07-16
 ---
 
 虽然也做了一些小型的项目，照猫画虎一般地实现了一些小功能，还是应该吧之前不是很明确的东西归纳一下。
@@ -34,7 +34,58 @@ date: 2021-07-15
 this.$off(自定义事件名)
 
 
+## 组件之间通信：全局事件总线
+关于事件总线的概念，在刚参加工作时候做Android时使用过EventBus，但是经年累月基本上也忘干净了。在Vue中我们也来实现一个事件总线。
 
+### 原理
+我们想实现兄弟组件之间的调用，其实可以利用上文中的自定义事件。
+比如说我们有A，B，C三个兄弟组件，如果A想接受C组件传递来的数据，我们可以在外部定义一个X组件，这个X组件与ABC均没有所属关系。我在A组件中写一个回调testCallback，同时为X组件绑定自定义事件test等待调用。然后在C组件中来触发X组件中的test事件，在触发时间的同时传递数据，该数据就应该是A组件中testCallback函数的参数。也就是说，C组件通过调用X组件的自定义事件，传递了参数，同时启动了A组件中自定义事件的回调，来实现数据的传递。 
 
+对于X组件来说，需要如下2个设计思路
+1. X组件对于所有组件都可见
+2. X组件需要能够调用自定义事件的相关Api，$on,$off,$emit等。
+
+我们首先回忆之前记录的一个内置关系，
+* Vue.prototype === vm.__proto__
+* VueComponent.prototype === vc.__proto__
+* VueComponent.prototype === Vue.prototype.__proto__
+这个关系可以让组件实例对象，上述的vc能够访问到Vue原型上的属性和方法。
+
+### 安装全局事件总线
+```javascript
+new Vue({
+  render: h => h(App),
+  beforeCreate(){
+    Vue.prototype.$bus=this
+  }
+}).$mount('#app')
+```
+
+简单解释一下，如果我们把Vue.prototype.$bus设置成为一个普通对象的话，他是没有办法获取到Vue原型对象的，所以，只要我们把vm（也就是Vue的实例对象）赋值给$bus，$bus就能够获取到Vue原型上的属性和方法，而自定义事件的相关Api，$on,$off,$emit等，就在Vue原型上。
+
+所以我们在vm实例的beforeCreate生命周期中，声明这个$bus，这个$bus就能够获得Vue原型上的各个Api了。 
+
+而在各个组件中使用的时候
+#### 接受数据的组件
+```
+    mounted() {
+        		this.$bus.$on('hello',(data)=>{
+			console.log('收到了数据',data)
+		})
+	},
+	beforeDestroy() {
+		this.$bus.$off('hello')
+	},
+```
+
+#### 发送数据的组件
+```
+	methods: {
+			sendData(){
+				this.$bus.$emit('hello',“data”)
+			}
+		},
+```
+上面的this分别代表这两个组件实例对象，还是通过我们之前记录的那个内置关系，在VueComponent的实例的原型链上能够找到Vue的原型链，那么也就是我们能够找到$bus，同时也能够找到Vue原型上的其他属性和方法。从而实现了兄弟组件之间数据传递的办法。
 
 

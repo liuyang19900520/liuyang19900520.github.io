@@ -51,4 +51,49 @@ date: 2021-08-11
 
 
 ### Backend API
-我们能不能直接从VueComponents直接调用commit方法来对Mutation进行操作，从而实现对state的控制呢，其实是可以的。
+我们能不能直接从VueComponents直接调用commit方法来对Mutation进行操作，从而实现对state的控制呢，其实是可以的。毕竟我们知道这些API都是绑定在VueComponent实例上。
+那之所以要用Action的原因主要是，我们往往需要更新state的值，往往是需要我们通过Axios从服务器请求获得的，这种情况下，我们常常把请求的操作，写在Action中。下面是一个官网的例子
+``` Vue
+actions: {
+  async actionA ({ commit }) {
+    commit('gotData', await getData())
+  },
+  async actionB ({ dispatch, commit }) {
+    await dispatch('actionA') // 等待 actionA 完成
+    commit('gotOtherData', await getOtherData())
+  }
+}
+```
+> 一个 store.dispatch 在不同模块中可以触发多个 action 函数。在这种情况下，只有当所有触发函数完成后，返回的 Promise 才会执行。
+
+
+## Getter
+虽然有些不同，我们可以粗矿地理解为getter是store中的computed计算属性
+
+
+## 辅助函数
+约定大于配置，所以Vue提供了很多方便写法的辅助函数。
+### mapStates
+[mapStates-辅助函数](https://vuex.vuejs.org/zh/guide/state.html#mapstate-%E8%BE%85%E5%8A%A9%E5%87%BD%E6%95%B0) 
+上述的文档中实现了一个操作，并且逐步简化。
+1. 我们可以使用 mapState 辅助函数帮助我们生成计算属性，也就是说我们可以把this.$store.state.xx赋予了一个别名。
+2. 当映射的计算属性的名称与 state 的子节点名称相同时，我们也可以给 mapState 传一个字符串数组。
+3. 使用对象展开运算符... 可以将将state中的对象与局部的计算属性混合使用，
+
+### mapGetters
+[mapGetters-辅助函数](https://vuex.vuejs.org/zh/guide/getters.html#mapgetters-%E8%BE%85%E5%8A%A9%E5%87%BD%E6%95%B0) 
+上述的负责从state中获取，mapGetters就是负责从Getter中获取数据。
+
+### mapMutations
+[mapGetters-辅助函数](https://vuex.vuejs.org/zh/api/#mapmutations)
+mapMutations 辅助函数将组件中的 methods 映射为 store.commit 调用,换句话中，就是通过mapMutatios辅助函数，生成一个能够与Mutation对话的方法，也就是生成了一个包含commit的method。值得注意的事，如果在组件中绑定的时候，需要将顶一个这个函数的参数在模板中进行传递。 
+如果不在模板中传值，默认传递的值是事件Event。
+
+### mapActions
+[mapActions-辅助函数](https://vuex.vuejs.org/zh/api/#actions)
+mapActions 辅助函数将组件中的 methods 映射为 store.dispatch 调用,换句话中，就是通过mapMutatios辅助函数，生成一个能够与Atcion对话的方法，也就是生成了一个包含dispatch的method。值得注意的事，如果在组件中绑定的时候，需要将顶一个这个函数的参数在模板中进行传递。 
+如果不在模板中传值，默认传递的值是事件Event。
+
+
+
+

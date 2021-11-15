@@ -95,5 +95,131 @@ mapActions 辅助函数将组件中的 methods 映射为 store.dispatch 调用,�
 如果不在模板中传值，默认传递的值是事件Event。
 
 
+## Moudles
+这一部分并没有什么特殊需要注意点，就是将原来一个模块拆分成多个模块，粘贴一下官网的例子吧。
+``` vue
+const moduleA = {
+  state: () => ({ ... }),
+  mutations: { ... },
+  actions: { ... },
+  getters: { ... }
+}
+
+const moduleB = {
+  state: () => ({ ... }),
+  mutations: { ... },
+  actions: { ... }
+}
+
+const store = createStore({
+  modules: {
+    a: moduleA,
+    b: moduleB
+  }
+})
+
+store.state.a // -> moduleA 的状态
+store.state.b // -> moduleB 的状态 
+```
+### 命名空间的例子
+当我们想使用mapXXX函数数组简写的方式的时候，我们无比定义命名空间才可以。
+vuex的定义，其中导入了每一个vuex的moudle
+``` Vue
+//该文件用于创建Vuex中最为核心的store
+import Vue from 'vue'
+//引入Vuex
+import Vuex from 'vuex'
+import countOptions from './count'
+import personOptions from './person'
+//应用Vuex插件
+Vue.use(Vuex)
+
+//创建并暴露store
+export default new Vuex.Store({
+	modules:{
+		countAbout:countOptions,
+		personAbout:personOptions
+	}
+})
+```
+
+vuex的moudle的定义阶段，以其中的一个moudle为例子
+``` vue
+//人员管理相关的配置
+import axios from 'axios'
+import { nanoid } from 'nanoid'
+export default {
+	namespaced:true,
+	actions:{
+		addPersonWang(context,value){
+			if(value.name.indexOf('王') === 0){
+				context.commit('ADD_PERSON',value)
+			}else{
+				alert('添加的人必须姓王！')
+			}
+		},
+		addPersonServer(context){
+			axios.get('https://api.uixsj.cn/hitokoto/get?type=social').then(
+				response => {
+					context.commit('ADD_PERSON',{id:nanoid(),name:response.data})
+				},
+				error => {
+					alert(error.message)
+				}
+			)
+		}
+	},
+	mutations:{
+		ADD_PERSON(state,value){
+			console.log('mutations中的ADD_PERSON被调用了')
+			state.personList.unshift(value)
+		}
+	},
+	state:{
+		personList:[
+			{id:'001',name:'张三'}
+		]
+	},
+	getters:{
+		firstPersonName(state){
+			return state.personList[0].name
+		}
+	},
+}
+```
+调用阶段，如果要使用map简写函数，我们就必须要在moudle的定义中加上命名空间
+``` vue
+
+<script>
+	import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
+	export default {
+		name:'Count',
+		data() {
+			return {
+				n:1, //用户选择的数字
+			}
+		},
+		computed:{
+			//借助mapState生成计算属性，从state中读取数据。（数组写法）
+			...mapState('countAbout',['sum','school','subject']),
+			...mapState('personAbout',['personList']),
+			//借助mapGetters生成计算属性，从getters中读取数据。（数组写法）
+			...mapGetters('countAbout',['bigSum'])
+		},
+		methods: {
+			//借助mapMutations生成对应的方法，方法中会调用commit去联系mutations(对象写法)
+			...mapMutations('countAbout',{increment:'JIA',decrement:'JIAN'}),
+			//借助mapActions生成对应的方法，方法中会调用dispatch去联系actions(对象写法)
+			...mapActions('countAbout',{incrementOdd:'jiaOdd',incrementWait:'jiaWait'})
+		},
+		mounted() {
+			console.log(this.$store)
+		},
+	}
+</script>
+
+
+
+```
 
 

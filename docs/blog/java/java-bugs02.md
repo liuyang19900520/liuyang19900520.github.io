@@ -80,7 +80,9 @@ System.out.println(set2.contains(new BigDecimal("1.000").stripTrailingZeros()));
 ## Java的一些零碎知识点
 全的前提下，通过parallel可以进行并行处理。比如我们要同时下载多个图片这类操作。
 
+### Optional
+[函数式变成的一些基础操作](https://blog.csdn.net/icarusliu/article/details/79495534)
+
 ### Reduce
 [Stream的Reduce及Collect方法详解](https://blog.csdn.net/icarusliu/article/details/79504602)
 
-### ForkJoinPool

@@ -1,15 +1,21 @@
 module.exports = [{
 
-  title: '数组，链表', // 必要的
+  title: '时间复杂度', // 必要的
   sidebarDepth: 1, // 可选的, 默认值是 1
   children: [
     'No.0136-Single-Number',
   ]
-}, {
-  title: '数组，链表', // 必要的
+}, 
+{
+  title: '数组', // 必要的
   sidebarDepth: 1, // 可选的, 默认值是 1
   children: [
     'No.0283-Move-Zeros',
+  ]
+},{
+  title: '链表', // 必要的
+  sidebarDepth: 1, // 可选的, 默认值是 1
+  children: [
     'No.0011-Container-With-Most-Water',
     'No.0070-Climbing-Stairs',
     'No.0015-3-Sum',

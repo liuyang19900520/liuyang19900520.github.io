@@ -11,6 +11,7 @@ module.exports = [{
   sidebarDepth: 1, // 可选的, 默认值是 1
   children: [
     'No.0283-Move-Zeros',
+    'No.0485-Max-Consecutive-Ones'
   ]
 },{
   title: '链表', // 必要的

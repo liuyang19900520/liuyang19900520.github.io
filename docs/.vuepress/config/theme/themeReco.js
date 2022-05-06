@@ -27,11 +27,8 @@ module.exports = {
                 text: 'NestJS+Vue+MongoDB小型展示系统',
                 link: '/subject/jcaiot/'
             }, {
-                text: 'layman-starter(Spring Boot入门)',
-                link: '/subject/layman-starter/'
-            },{
-                text: '我读Spring源码的随笔',
-                link: '/subject/spring-source/'
+                text: '用于练手的一个Java项目',
+                link: '/subject/layman/'
             },{
                 text: 'LeetCode(放弃之旅)',
                 link: '/subject/leetcode/'

@@ -1,5 +1,4 @@
 module.exports = [{
-
   title: '时间复杂度', // 必要的
   sidebarDepth: 1, // 可选的, 默认值是 1
   children: [
@@ -11,7 +10,8 @@ module.exports = [{
   sidebarDepth: 1, // 可选的, 默认值是 1
   children: [
     'No.0283-Move-Zeros',
-    'No.0485-Max-Consecutive-Ones'
+    'No.0485-Max-Consecutive-Ones',
+    'No.0027-Remove-Element'
   ]
 },{
   title: '链表', // 必要的

@@ -1,1 +1,7 @@
 node_modules
+docs/**/.DS_Store
+docs/.DS_Store
+docs/.DS_Store
+docs/subject/.DS_Store
+docs/blog/.DS_Store
+docs/.vuepress/.DS_Store

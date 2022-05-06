@@ -21,7 +21,6 @@ module.exports = {
     lineNumbers: true,
     extendMarkdown: md => {
       // 使用更多的 markdown-it 插件!
-      md.use(require('markdown-it-imsize'))
     }
   }
 };

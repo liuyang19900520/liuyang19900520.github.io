@@ -48,7 +48,7 @@ module.exports = {
         tag: {
             location: 4, // 在导航栏菜单中所占的位置，默认3
             text: 'Tag' // 默认文案 “标签”
-        }
+        } 
     },
     editLinks: true,
     mode: 'light'

@@ -11,5 +11,11 @@ module.exports = [{
     'layman-starter-07',
     'layman-starter-08',
   ]
+}, {
+  title: 'layman-cloud', // 必要的
+  sidebarDepth: 1, // 可选的, 默认值是 1
+  children: [
+    'layman-cloud-01',
+  ]
 }, 
 ]

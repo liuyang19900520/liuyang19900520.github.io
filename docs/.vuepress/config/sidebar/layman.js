@@ -16,6 +16,8 @@ module.exports = [{
   sidebarDepth: 1, // 可选的, 默认值是 1
   children: [
     'layman-cloud-01',
+    'layman-cloud-02',
+
   ]
 }, 
 ]

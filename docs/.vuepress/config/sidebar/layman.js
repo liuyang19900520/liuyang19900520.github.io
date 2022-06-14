@@ -5,7 +5,7 @@ module.exports = [{
     'layman-starter-01',
     'layman-starter-02',
     'layman-starter-03',
-    'layman-starter-04',    
+    'layman-starter-04',
     'layman-starter-05',
     'layman-starter-06',
     'layman-starter-07',
@@ -17,7 +17,6 @@ module.exports = [{
   children: [
     'layman-cloud-01',
     'layman-cloud-02',
-
+    'layman-cloud-03',
   ]
-}, 
-]
+}, ]

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Nacos配置中心的简单使用 | LiuYang&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="我常常想，想进步总不是坏事">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    
+    <link rel="preload" href="/assets/css/0.styles.adbb7a43.css" as="style"><link rel="preload" href="/assets/js/app.9d6f87e8.js" as="script"><link rel="preload" href="/assets/js/3.8704adc8.js" as="script"><link rel="preload" href="/assets/js/1.068f709e.js" as="script"><link rel="preload" href="/assets/js/49.2d9fee29.js" as="script"><link rel="prefetch" href="/assets/js/10.1e2e473b.js"><link rel="prefetch" href="/assets/js/11.9216ac60.js"><link rel="prefetch" href="/assets/js/12.b7333061.js"><link rel="prefetch" href="/assets/js/13.f4d050dd.js"><link rel="prefetch" href="/assets/js/14.089fa433.js"><link rel="prefetch" href="/assets/js/15.a736e210.js"><link rel="prefetch" href="/assets/js/16.59978258.js"><link rel="prefetch" href="/assets/js/17.7963451f.js"><link rel="prefetch" href="/assets/js/18.f0bf35ae.js"><link rel="prefetch" href="/assets/js/19.006e8b2e.js"><link rel="prefetch" href="/assets/js/20.3dc189ef.js"><link rel="prefetch" href="/assets/js/21.4a447df0.js"><link rel="prefetch" href="/assets/js/22.b704c020.js"><link rel="prefetch" href="/assets/js/23.4d913e82.js"><link rel="prefetch" href="/assets/js/24.6e6299a1.js"><link rel="prefetch" href="/assets/js/25.6be5d2e2.js"><link rel="prefetch" href="/assets/js/26.c084caff.js"><link rel="prefetch" href="/assets/js/27.2a53e819.js"><link rel="prefetch" href="/assets/js/28.8d06b752.js"><link rel="prefetch" href="/assets/js/29.001fba6c.js"><link rel="prefetch" href="/assets/js/30.cf760a65.js"><link rel="prefetch" href="/assets/js/31.f7a94075.js"><link rel="prefetch" href="/assets/js/32.4fb90de7.js"><link rel="prefetch" href="/assets/js/33.8a58bb24.js"><link rel="prefetch" href="/assets/js/34.4326f587.js"><link rel="prefetch" href="/assets/js/35.f86ba978.js"><link rel="prefetch" href="/assets/js/36.65dcf2eb.js"><link rel="prefetch" href="/assets/js/37.460ce946.js"><link rel="prefetch" href="/assets/js/38.765aee1d.js"><link rel="prefetch" href="/assets/js/39.7d1fa92c.js"><link rel="prefetch" href="/assets/js/4.79f42669.js"><link rel="prefetch" href="/assets/js/40.26f2b6ea.js"><link rel="prefetch" href="/assets/js/41.141ec851.js"><link rel="prefetch" href="/assets/js/42.3602c562.js"><link rel="prefetch" href="/assets/js/43.e653013c.js"><link rel="prefetch" href="/assets/js/44.43227fd4.js"><link rel="prefetch" href="/assets/js/45.a2b22249.js"><link rel="prefetch" href="/assets/js/46.e8b2ce32.js"><link rel="prefetch" href="/assets/js/47.db54e219.js"><link rel="prefetch" href="/assets/js/48.60f243dc.js"><link rel="prefetch" href="/assets/js/5.b28e425c.js"><link rel="prefetch" href="/assets/js/50.47d56d3c.js"><link rel="prefetch" href="/assets/js/51.614b406b.js"><link rel="prefetch" href="/assets/js/52.1d402756.js"><link rel="prefetch" href="/assets/js/53.c03ac270.js"><link rel="prefetch" href="/assets/js/54.30f91ab1.js"><link rel="prefetch" href="/assets/js/55.91998006.js"><link rel="prefetch" href="/assets/js/56.0f7ef455.js"><link rel="prefetch" href="/assets/js/57.cc00c99d.js"><link rel="prefetch" href="/assets/js/58.39c251e7.js"><link rel="prefetch" href="/assets/js/59.d73e0a0a.js"><link rel="prefetch" href="/assets/js/6.d933fb94.js"><link rel="prefetch" href="/assets/js/60.199516c4.js"><link rel="prefetch" href="/assets/js/61.168f2625.js"><link rel="prefetch" href="/assets/js/62.89f79b6e.js"><link rel="prefetch" href="/assets/js/63.11bc4058.js"><link rel="prefetch" href="/assets/js/64.b3dbf794.js"><link rel="prefetch" href="/assets/js/65.80fe452f.js"><link rel="prefetch" href="/assets/js/66.6820b1dc.js"><link rel="prefetch" href="/assets/js/67.4005fde3.js"><link rel="prefetch" href="/assets/js/68.f049266e.js"><link rel="prefetch" href="/assets/js/69.b198ce59.js"><link rel="prefetch" href="/assets/js/7.723be965.js"><link rel="prefetch" href="/assets/js/70.8e5c1207.js"><link rel="prefetch" href="/assets/js/71.54dcbacb.js"><link rel="prefetch" href="/assets/js/8.644b674c.js"><link rel="prefetch" href="/assets/js/9.ebc4511e.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.adbb7a43.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-1156296a><div data-v-1156296a><div id="loader-wrapper" class="loading-wrapper" data-v-d48f4d20 data-v-1156296a data-v-1156296a><div class="loader-main" data-v-d48f4d20><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div></div> <!----> <!----></div> <div class="password-shadow password-wrapper-out" style="display:none;" data-v-4e82dffc data-v-1156296a data-v-1156296a><h3 class="title" data-v-4e82dffc data-v-4e82dffc>LiuYang's Blog</h3> <p class="description" data-v-4e82dffc data-v-4e82dffc>我常常想，想进步总不是坏事</p> <label id="box" class="inputBox" data-v-4e82dffc data-v-4e82dffc><input type="password" value="" data-v-4e82dffc> <span data-v-4e82dffc>Konck! Knock!</span> <button data-v-4e82dffc>OK</button></label> <div class="footer" data-v-4e82dffc data-v-4e82dffc><span data-v-4e82dffc><i class="iconfont reco-theme" data-v-4e82dffc></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-4e82dffc>vuePress-theme-reco</a></span> <span data-v-4e82dffc><i class="iconfont reco-copyright" data-v-4e82dffc></i> <a data-v-4e82dffc><span data-v-4e82dffc>LiuYang</span>
+            
+          <span data-v-4e82dffc>2019 - </span>
+          2022
+        </a></span></div></div> <div class="hide" data-v-1156296a><header class="navbar" data-v-1156296a><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">LiuYang's Blog</span></a> <div class="links"><div class="color-picker"><a class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="mode-options"><h4 class="title">Choose mode</h4> <ul class="color-mode-options"><li class="dark">dark</li><li class="auto active">auto</li><li class="light">light</li></ul></div></div></div> <!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  Blog
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-document"></i>
+      Subject
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/subject/jcaiot/" class="nav-link"><i class="undefined"></i>
+  NestJS+Vue+MongoDB小型展示系统
+</a></li><li class="dropdown-item"><!----> <a href="/subject/layman/" class="nav-link router-link-active"><i class="undefined"></i>
+  用于练手的一个Java项目
+</a></li><li class="dropdown-item"><!----> <a href="/subject/leetcode/" class="nav-link"><i class="undefined"></i>
+  LeetCode(放弃之旅)
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      Category
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/categories/Vue/" class="nav-link"><i class="undefined"></i>
+  Vue
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Java/" class="nav-link"><i class="undefined"></i>
+  Java
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring/" class="nav-link"><i class="undefined"></i>
+  Spring
+</a></li><li class="dropdown-item"><!----> <a href="/categories/MongoDB/" class="nav-link"><i class="undefined"></i>
+  MongoDB
+</a></li><li class="dropdown-item"><!----> <a href="/categories/NestJS/" class="nav-link"><i class="undefined"></i>
+  NestJS
+</a></li><li class="dropdown-item"><!----> <a href="/categories/linux/" class="nav-link"><i class="undefined"></i>
+  linux
+</a></li><li class="dropdown-item"><!----> <a href="/categories/docker/" class="nav-link"><i class="undefined"></i>
+  docker
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring Cloud Alibaba/" class="nav-link"><i class="undefined"></i>
+  Spring Cloud Alibaba
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring Boot/" class="nav-link"><i class="undefined"></i>
+  Spring Boot
+</a></li><li class="dropdown-item"><!----> <a href="/categories/LeetCode/" class="nav-link"><i class="undefined"></i>
+  LeetCode
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  Tag
+</a></div><div class="nav-item"><a href="https://github.com/liuyang19900520" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask" data-v-1156296a></div> <aside class="sidebar" data-v-1156296a><div class="personal-info-wrapper" data-v-828910c6 data-v-1156296a><img src="/assets/img/logo.png" alt="author-avatar" class="personal-img" data-v-828910c6> <h3 class="name" data-v-828910c6>
+    LiuYang
+  </h3> <div class="num" data-v-828910c6><div data-v-828910c6><h3 data-v-828910c6>58</h3> <h6 data-v-828910c6>Articles</h6></div> <div data-v-828910c6><h3 data-v-828910c6>27</h3> <h6 data-v-828910c6>Tags</h6></div></div> <ul class="social-links" data-v-828910c6></ul> <hr data-v-828910c6></div> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  Blog
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-document"></i>
+      Subject
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/subject/jcaiot/" class="nav-link"><i class="undefined"></i>
+  NestJS+Vue+MongoDB小型展示系统
+</a></li><li class="dropdown-item"><!----> <a href="/subject/layman/" class="nav-link router-link-active"><i class="undefined"></i>
+  用于练手的一个Java项目
+</a></li><li class="dropdown-item"><!----> <a href="/subject/leetcode/" class="nav-link"><i class="undefined"></i>
+  LeetCode(放弃之旅)
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      Category
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/categories/Vue/" class="nav-link"><i class="undefined"></i>
+  Vue
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Java/" class="nav-link"><i class="undefined"></i>
+  Java
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring/" class="nav-link"><i class="undefined"></i>
+  Spring
+</a></li><li class="dropdown-item"><!----> <a href="/categories/MongoDB/" class="nav-link"><i class="undefined"></i>
+  MongoDB
+</a></li><li class="dropdown-item"><!----> <a href="/categories/NestJS/" class="nav-link"><i class="undefined"></i>
+  NestJS
+</a></li><li class="dropdown-item"><!----> <a href="/categories/linux/" class="nav-link"><i class="undefined"></i>
+  linux
+</a></li><li class="dropdown-item"><!----> <a href="/categories/docker/" class="nav-link"><i class="undefined"></i>
+  docker
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring Cloud Alibaba/" class="nav-link"><i class="undefined"></i>
+  Spring Cloud Alibaba
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring Boot/" class="nav-link"><i class="undefined"></i>
+  Spring Boot
+</a></li><li class="dropdown-item"><!----> <a href="/categories/LeetCode/" class="nav-link"><i class="undefined"></i>
+  LeetCode
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  Tag
+</a></div><div class="nav-item"><a href="https://github.com/liuyang19900520" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav> <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>layman-starter</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>layman-cloud</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/subject/layman/layman-cloud-01.html" class="sidebar-link">尝试在虚拟机上配置docker来启动mysql和redis</a></li><li><a href="/subject/layman/layman-cloud-02.html" class="sidebar-link">Nacos + Feign 联调成功</a></li><li><a href="/subject/layman/layman-cloud-03.html" aria-current="page" class="active sidebar-link">Nacos配置中心的简单使用</a></li></ul></section></li></ul> </aside> <div class="password-shadow password-wrapper-in" style="display:none;" data-v-4e82dffc data-v-1156296a><h3 class="title" data-v-4e82dffc data-v-4e82dffc>Nacos配置中心的简单使用</h3> <!----> <label id="box" class="inputBox" data-v-4e82dffc data-v-4e82dffc><input type="password" value="" data-v-4e82dffc> <span data-v-4e82dffc>Konck! Knock!</span> <button data-v-4e82dffc>OK</button></label> <div class="footer" data-v-4e82dffc data-v-4e82dffc><span data-v-4e82dffc><i class="iconfont reco-theme" data-v-4e82dffc></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-4e82dffc>vuePress-theme-reco</a></span> <span data-v-4e82dffc><i class="iconfont reco-copyright" data-v-4e82dffc></i> <a data-v-4e82dffc><span data-v-4e82dffc>LiuYang</span>
+            
+          <span data-v-4e82dffc>2019 - </span>
+          2022
+        </a></span></div></div> <div data-v-1156296a><main class="page" style="padding-right:0;"><section><div class="page-title"><h1 class="title">Nacos配置中心的简单使用</h1> <div data-v-1ff7123e><i class="iconfont reco-account" data-v-1ff7123e><span data-v-1ff7123e>LiuYang</span></i> <i class="iconfont reco-date" data-v-1ff7123e><span data-v-1ff7123e>12/22/2021</span></i> <!----> <i class="tags iconfont reco-tag" data-v-1ff7123e><span class="tag-item" data-v-1ff7123e>Spring</span><span class="tag-item" data-v-1ff7123e>Spring Cloud Alibaba</span><span class="tag-item" data-v-1ff7123e>Nacos</span></i></div></div> <div class="theme-reco-content content__default"><h2 id="简单应用"><a href="#简单应用" class="header-anchor">#</a> 简单应用</h2> <ol><li>导入依赖。在common中导入maven依赖后，我们就可以在各个工程中进行使用</li> <li>在8848的nacos服务中配置好响应的配置文件
+<img src="/subject/layman-cloud/cloud-3-nacos.png" alt="0001"></li> <li>在Spring Boot使用@Values注解中进行常规操作的文件取得，这样在我们访问这个Controller的时候，就可以直接得到配置中心中发布的配置</li></ol> <div class="language-java line-numbers-mode"><pre class="language-java"><code>
+  <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">&quot;${coupon.user.name}&quot;</span><span class="token punctuation">)</span>
+  <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+  <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">&quot;${coupon.user.age}&quot;</span><span class="token punctuation">)</span>
+  <span class="token keyword">private</span> <span class="token class-name">Integer</span> age<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><ol start="4"><li>在配置文件中进行配置</li> <li>动态获取，需要再相应的Controller上添加@RefreshScope注解来实现动态获取</li></ol> <h2 id="命名空间"><a href="#命名空间" class="header-anchor">#</a> 命名空间</h2> <p>负责配置隔离，默认为public。
+比如，为开发，测试，生产环境进行配置，我个人理解就像单体建构下设置多个properties文件一样。</p> <h2 id="配置集"><a href="#配置集" class="header-anchor">#</a> 配置集</h2></div></section> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated: </span> <span class="time">6/14/2022, 2:59:16 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev"><a href="/subject/layman/layman-cloud-02.html" class="prev">
+            Nacos + Feign 联调成功
+          </a></span> <!----></p></div> <div class="comments-wrapper"><!----></div> <ul class="side-bar sub-sidebar-wrapper" style="width:0;" data-v-70334359></ul></main> <!----></div></div></div></div><div class="global-ui"><div class="back-to-ceiling" style="right:1rem;bottom:6rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;display:none;" data-v-c6073ba8 data-v-c6073ba8><svg t="1574745035067" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5404" class="icon" data-v-c6073ba8><path d="M526.60727968 10.90185116a27.675 27.675 0 0 0-29.21455937 0c-131.36607665 82.28402758-218.69155461 228.01873535-218.69155402 394.07834331a462.20625001 462.20625001 0 0 0 5.36959153 69.94390903c1.00431239 6.55289093-0.34802892 13.13561351-3.76865779 18.80351572-32.63518765 54.11355614-51.75690182 118.55860487-51.7569018 187.94566865a371.06718723 371.06718723 0 0 0 11.50484808 91.98906777c6.53300375 25.50556257 41.68394495 28.14064038 52.69160883 4.22606766 17.37162448-37.73630017 42.14135425-72.50938081 72.80769204-103.21549295 2.18761121 3.04276886 4.15646224 6.24463696 6.40373557 9.22774369a1871.4375 1871.4375 0 0 0 140.04691725 5.34970492 1866.36093723 1866.36093723 0 0 0 140.04691723-5.34970492c2.24727335-2.98310674 4.21612437-6.18497483 6.3937923-9.2178004 30.66633723 30.70611158 55.4360664 65.4791928 72.80769147 103.21549355 11.00766384 23.91457269 46.15860503 21.27949489 52.69160879-4.22606768a371.15156223 371.15156223 0 0 0 11.514792-91.99901164c0-69.36717486-19.13165746-133.82216804-51.75690182-187.92578088-3.42062944-5.66790279-4.76302748-12.26056868-3.76865837-18.80351632a462.20625001 462.20625001 0 0 0 5.36959269-69.943909c-0.00994388-166.08943902-87.32547796-311.81420293-218.6915546-394.09823051zM605.93803103 357.87693858a93.93749974 93.93749974 0 1 1-187.89594924 6.1e-7 93.93749974 93.93749974 0 0 1 187.89594924-6.1e-7z" p-id="5405" data-v-c6073ba8></path><path d="M429.50777625 765.63860547C429.50777625 803.39355007 466.44236686 1000.39046097 512.00932183 1000.39046097c45.56695499 0 82.4922232-197.00623328 82.5015456-234.7518555 0-37.75494459-36.9345906-68.35043303-82.4922232-68.34111062-45.57627738-0.00932239-82.52019037 30.59548842-82.51086798 68.34111062z" p-id="5406" data-v-c6073ba8></path></svg></div></div></div>
+    <script src="/assets/js/app.9d6f87e8.js" defer></script><script src="/assets/js/3.8704adc8.js" defer></script><script src="/assets/js/1.068f709e.js" defer></script><script src="/assets/js/49.2d9fee29.js" defer></script>
+  </body>
+</html>

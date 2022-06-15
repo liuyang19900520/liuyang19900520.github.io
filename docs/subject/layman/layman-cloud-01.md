@@ -64,3 +64,32 @@ sudo systemctl enable docker
 docker update redis --restart=always
 docker update mysql --restart=always
 ```
+
+当虚拟机重启后，网络无法访问的情况的时候，同时我们在ifcofig中也没有看到执勤啊ets33的网卡，我们可以选择禁用网络管理器后再重启的办法来进行
+···shell
+systemctl stop NetworkManager
+systemctl disable NetworkManager
+···
+
+同时为了访问简单，我们有必要把centos的防火墙进行关闭。
+
+```shell
+#查看防火墙状态	
+systemctl status firewalld / firewall-cmd --state	
+#暂时关闭防火墙	
+systemctl stop firewalld	
+#永久关闭防火墙(禁用开机自启)	
+systemctl disable firewalld	
+#暂时开启防火墙	
+systemctl start firewalld	
+#永久开启防火墙(启用开机自启)	
+systemctl enable firewalld	
+#开放指定端口	
+firewall-cmd --zone=public --add-port=8080/tcp --permanent	
+#关闭指定端口	
+firewall-cmd --zone=public --remove-port=8080/tcp --permanent	
+#立即生效(重新加载)	
+firewall-cmd --reload	
+#查看开放端口	
+firewall-cmd --zone=public --list-ports	
+```

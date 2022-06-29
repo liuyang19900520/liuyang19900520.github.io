@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>S3存储，实现简单的预签名上传功能 | LiuYang&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="我常常想，想进步总不是坏事">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    
+    <link rel="preload" href="/assets/css/0.styles.adbb7a43.css" as="style"><link rel="preload" href="/assets/js/app.4e0eaa05.js" as="script"><link rel="preload" href="/assets/js/3.8704adc8.js" as="script"><link rel="preload" href="/assets/js/1.068f709e.js" as="script"><link rel="preload" href="/assets/js/51.1c5a6e27.js" as="script"><link rel="prefetch" href="/assets/js/10.1e2e473b.js"><link rel="prefetch" href="/assets/js/11.9216ac60.js"><link rel="prefetch" href="/assets/js/12.b7333061.js"><link rel="prefetch" href="/assets/js/13.f4d050dd.js"><link rel="prefetch" href="/assets/js/14.089fa433.js"><link rel="prefetch" href="/assets/js/15.a736e210.js"><link rel="prefetch" href="/assets/js/16.59978258.js"><link rel="prefetch" href="/assets/js/17.7963451f.js"><link rel="prefetch" href="/assets/js/18.f0bf35ae.js"><link rel="prefetch" href="/assets/js/19.006e8b2e.js"><link rel="prefetch" href="/assets/js/20.ec1de83e.js"><link rel="prefetch" href="/assets/js/21.86e2a44f.js"><link rel="prefetch" href="/assets/js/22.b704c020.js"><link rel="prefetch" href="/assets/js/23.4d913e82.js"><link rel="prefetch" href="/assets/js/24.6e6299a1.js"><link rel="prefetch" href="/assets/js/25.6be5d2e2.js"><link rel="prefetch" href="/assets/js/26.c084caff.js"><link rel="prefetch" href="/assets/js/27.2a53e819.js"><link rel="prefetch" href="/assets/js/28.8d06b752.js"><link rel="prefetch" href="/assets/js/29.001fba6c.js"><link rel="prefetch" href="/assets/js/30.cf760a65.js"><link rel="prefetch" href="/assets/js/31.f7a94075.js"><link rel="prefetch" href="/assets/js/32.4fb90de7.js"><link rel="prefetch" href="/assets/js/33.8a58bb24.js"><link rel="prefetch" href="/assets/js/34.4326f587.js"><link rel="prefetch" href="/assets/js/35.f86ba978.js"><link rel="prefetch" href="/assets/js/36.65dcf2eb.js"><link rel="prefetch" href="/assets/js/37.14e6a17f.js"><link rel="prefetch" href="/assets/js/38.c683c99c.js"><link rel="prefetch" href="/assets/js/39.7d1fa92c.js"><link rel="prefetch" href="/assets/js/4.79f42669.js"><link rel="prefetch" href="/assets/js/40.26f2b6ea.js"><link rel="prefetch" href="/assets/js/41.141ec851.js"><link rel="prefetch" href="/assets/js/42.3602c562.js"><link rel="prefetch" href="/assets/js/43.e653013c.js"><link rel="prefetch" href="/assets/js/44.43227fd4.js"><link rel="prefetch" href="/assets/js/45.9864eed7.js"><link rel="prefetch" href="/assets/js/46.c10dd5ac.js"><link rel="prefetch" href="/assets/js/47.63268270.js"><link rel="prefetch" href="/assets/js/48.60f243dc.js"><link rel="prefetch" href="/assets/js/49.9daed84d.js"><link rel="prefetch" href="/assets/js/5.b28e425c.js"><link rel="prefetch" href="/assets/js/50.7b387456.js"><link rel="prefetch" href="/assets/js/52.7e8b955c.js"><link rel="prefetch" href="/assets/js/53.c309c83e.js"><link rel="prefetch" href="/assets/js/54.b52aa929.js"><link rel="prefetch" href="/assets/js/55.050ce0ff.js"><link rel="prefetch" href="/assets/js/56.af293b61.js"><link rel="prefetch" href="/assets/js/57.cd0a1bb1.js"><link rel="prefetch" href="/assets/js/58.62340788.js"><link rel="prefetch" href="/assets/js/59.e1278d4c.js"><link rel="prefetch" href="/assets/js/6.d933fb94.js"><link rel="prefetch" href="/assets/js/60.07bc5ac8.js"><link rel="prefetch" href="/assets/js/61.333eec09.js"><link rel="prefetch" href="/assets/js/62.40b503bd.js"><link rel="prefetch" href="/assets/js/63.711a6c68.js"><link rel="prefetch" href="/assets/js/64.d9f4f59d.js"><link rel="prefetch" href="/assets/js/65.0cba1381.js"><link rel="prefetch" href="/assets/js/66.2a03716c.js"><link rel="prefetch" href="/assets/js/67.7f918011.js"><link rel="prefetch" href="/assets/js/68.effa5de7.js"><link rel="prefetch" href="/assets/js/69.b4ce5560.js"><link rel="prefetch" href="/assets/js/7.723be965.js"><link rel="prefetch" href="/assets/js/70.097f6058.js"><link rel="prefetch" href="/assets/js/71.b1bc840b.js"><link rel="prefetch" href="/assets/js/72.339c8ca1.js"><link rel="prefetch" href="/assets/js/73.6ac13d8c.js"><link rel="prefetch" href="/assets/js/8.5016553e.js"><link rel="prefetch" href="/assets/js/9.ebc4511e.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.adbb7a43.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-1156296a><div data-v-1156296a><div id="loader-wrapper" class="loading-wrapper" data-v-d48f4d20 data-v-1156296a data-v-1156296a><div class="loader-main" data-v-d48f4d20><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div></div> <!----> <!----></div> <div class="password-shadow password-wrapper-out" style="display:none;" data-v-4e82dffc data-v-1156296a data-v-1156296a><h3 class="title" data-v-4e82dffc data-v-4e82dffc>LiuYang's Blog</h3> <p class="description" data-v-4e82dffc data-v-4e82dffc>我常常想，想进步总不是坏事</p> <label id="box" class="inputBox" data-v-4e82dffc data-v-4e82dffc><input type="password" value="" data-v-4e82dffc> <span data-v-4e82dffc>Konck! Knock!</span> <button data-v-4e82dffc>OK</button></label> <div class="footer" data-v-4e82dffc data-v-4e82dffc><span data-v-4e82dffc><i class="iconfont reco-theme" data-v-4e82dffc></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-4e82dffc>vuePress-theme-reco</a></span> <span data-v-4e82dffc><i class="iconfont reco-copyright" data-v-4e82dffc></i> <a data-v-4e82dffc><span data-v-4e82dffc>LiuYang</span>
+            
+          <span data-v-4e82dffc>2019 - </span>
+          2022
+        </a></span></div></div> <div class="hide" data-v-1156296a><header class="navbar" data-v-1156296a><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">LiuYang's Blog</span></a> <div class="links"><div class="color-picker"><a class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="mode-options"><h4 class="title">Choose mode</h4> <ul class="color-mode-options"><li class="dark">dark</li><li class="auto active">auto</li><li class="light">light</li></ul></div></div></div> <!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  Blog
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-document"></i>
+      Subject
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/subject/jcaiot/" class="nav-link"><i class="undefined"></i>
+  NestJS+Vue+MongoDB小型展示系统
+</a></li><li class="dropdown-item"><!----> <a href="/subject/layman/" class="nav-link router-link-active"><i class="undefined"></i>
+  用于练手的一个Java项目
+</a></li><li class="dropdown-item"><!----> <a href="/subject/leetcode/" class="nav-link"><i class="undefined"></i>
+  LeetCode(放弃之旅)
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      Category
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/categories/Vue/" class="nav-link"><i class="undefined"></i>
+  Vue
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Java/" class="nav-link"><i class="undefined"></i>
+  Java
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring/" class="nav-link"><i class="undefined"></i>
+  Spring
+</a></li><li class="dropdown-item"><!----> <a href="/categories/MongoDB/" class="nav-link"><i class="undefined"></i>
+  MongoDB
+</a></li><li class="dropdown-item"><!----> <a href="/categories/NestJS/" class="nav-link"><i class="undefined"></i>
+  NestJS
+</a></li><li class="dropdown-item"><!----> <a href="/categories/linux/" class="nav-link"><i class="undefined"></i>
+  linux
+</a></li><li class="dropdown-item"><!----> <a href="/categories/docker/" class="nav-link"><i class="undefined"></i>
+  docker
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring Cloud Alibaba/" class="nav-link"><i class="undefined"></i>
+  Spring Cloud Alibaba
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring Cloud Gateway/" class="nav-link"><i class="undefined"></i>
+  Spring Cloud Gateway
+</a></li><li class="dropdown-item"><!----> <a href="/categories/AWS/" class="nav-link"><i class="undefined"></i>
+  AWS
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring Boot/" class="nav-link"><i class="undefined"></i>
+  Spring Boot
+</a></li><li class="dropdown-item"><!----> <a href="/categories/LeetCode/" class="nav-link"><i class="undefined"></i>
+  LeetCode
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  Tag
+</a></div><div class="nav-item"><a href="https://github.com/liuyang19900520" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask" data-v-1156296a></div> <aside class="sidebar" data-v-1156296a><div class="personal-info-wrapper" data-v-828910c6 data-v-1156296a><img src="/assets/img/logo.png" alt="author-avatar" class="personal-img" data-v-828910c6> <h3 class="name" data-v-828910c6>
+    LiuYang
+  </h3> <div class="num" data-v-828910c6><div data-v-828910c6><h3 data-v-828910c6>60</h3> <h6 data-v-828910c6>Articles</h6></div> <div data-v-828910c6><h3 data-v-828910c6>30</h3> <h6 data-v-828910c6>Tags</h6></div></div> <ul class="social-links" data-v-828910c6></ul> <hr data-v-828910c6></div> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  Blog
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-document"></i>
+      Subject
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/subject/jcaiot/" class="nav-link"><i class="undefined"></i>
+  NestJS+Vue+MongoDB小型展示系统
+</a></li><li class="dropdown-item"><!----> <a href="/subject/layman/" class="nav-link router-link-active"><i class="undefined"></i>
+  用于练手的一个Java项目
+</a></li><li class="dropdown-item"><!----> <a href="/subject/leetcode/" class="nav-link"><i class="undefined"></i>
+  LeetCode(放弃之旅)
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      Category
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/categories/Vue/" class="nav-link"><i class="undefined"></i>
+  Vue
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Java/" class="nav-link"><i class="undefined"></i>
+  Java
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring/" class="nav-link"><i class="undefined"></i>
+  Spring
+</a></li><li class="dropdown-item"><!----> <a href="/categories/MongoDB/" class="nav-link"><i class="undefined"></i>
+  MongoDB
+</a></li><li class="dropdown-item"><!----> <a href="/categories/NestJS/" class="nav-link"><i class="undefined"></i>
+  NestJS
+</a></li><li class="dropdown-item"><!----> <a href="/categories/linux/" class="nav-link"><i class="undefined"></i>
+  linux
+</a></li><li class="dropdown-item"><!----> <a href="/categories/docker/" class="nav-link"><i class="undefined"></i>
+  docker
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring Cloud Alibaba/" class="nav-link"><i class="undefined"></i>
+  Spring Cloud Alibaba
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring Cloud Gateway/" class="nav-link"><i class="undefined"></i>
+  Spring Cloud Gateway
+</a></li><li class="dropdown-item"><!----> <a href="/categories/AWS/" class="nav-link"><i class="undefined"></i>
+  AWS
+</a></li><li class="dropdown-item"><!----> <a href="/categories/Spring Boot/" class="nav-link"><i class="undefined"></i>
+  Spring Boot
+</a></li><li class="dropdown-item"><!----> <a href="/categories/LeetCode/" class="nav-link"><i class="undefined"></i>
+  LeetCode
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  Tag
+</a></div><div class="nav-item"><a href="https://github.com/liuyang19900520" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav> <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>layman-starter</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/subject/layman/layman-starter-01.html" class="sidebar-link">001-创建SpringBoot+Mybatis-plus的小项目</a></li><li><a href="/subject/layman/layman-starter-02.html" class="sidebar-link">002-使用Swagger2为项目添加API文档</a></li><li><a href="/subject/layman/layman-starter-03.html" class="sidebar-link">003-自定义@ResponseBody注解实现灵活json返回</a></li><li><a href="/subject/layman/layman-starter-04.html" class="sidebar-link">004-异常处理</a></li><li><a href="/subject/layman/layman-starter-05.html" class="sidebar-link">005-为系统添加日志</a></li><li><a href="/subject/layman/layman-starter-06.html" class="sidebar-link">006-有必要做一个最简单的权限管理</a></li><li><a href="/subject/layman/layman-starter-07.html" class="sidebar-link">007-如何解决循环引用的冲突问题</a></li><li><a href="/subject/layman/layman-starter-08.html" class="sidebar-link">008-难缠的AccessDeniedHandler</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>layman-cloud</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <div class="password-shadow password-wrapper-in" style="display:none;" data-v-4e82dffc data-v-1156296a><h3 class="title" data-v-4e82dffc data-v-4e82dffc>S3存储，实现简单的预签名上传功能</h3> <!----> <label id="box" class="inputBox" data-v-4e82dffc data-v-4e82dffc><input type="password" value="" data-v-4e82dffc> <span data-v-4e82dffc>Konck! Knock!</span> <button data-v-4e82dffc>OK</button></label> <div class="footer" data-v-4e82dffc data-v-4e82dffc><span data-v-4e82dffc><i class="iconfont reco-theme" data-v-4e82dffc></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-4e82dffc>vuePress-theme-reco</a></span> <span data-v-4e82dffc><i class="iconfont reco-copyright" data-v-4e82dffc></i> <a data-v-4e82dffc><span data-v-4e82dffc>LiuYang</span>
+            
+          <span data-v-4e82dffc>2019 - </span>
+          2022
+        </a></span></div></div> <div data-v-1156296a><main class="page" style="padding-right:0;"><section><div class="page-title"><h1 class="title">S3存储，实现简单的预签名上传功能</h1> <div data-v-1ff7123e><i class="iconfont reco-account" data-v-1ff7123e><span data-v-1ff7123e>LiuYang</span></i> <i class="iconfont reco-date" data-v-1ff7123e><span data-v-1ff7123e>1/16/2022</span></i> <!----> <i class="tags iconfont reco-tag" data-v-1ff7123e><span class="tag-item" data-v-1ff7123e>Spring</span><span class="tag-item" data-v-1ff7123e>AWS</span><span class="tag-item" data-v-1ff7123e>S3</span></i></div></div> <div class="theme-reco-content content__default"><p>实现一个简单的预签名上传功能，虽然看起来很简单的功能，但是调试我也花了几个小时的时间。相关的步骤我记录一下吧。</p> <h3 id="第三方鉴权、签名服务"><a href="#第三方鉴权、签名服务" class="header-anchor">#</a> 第三方鉴权、签名服务</h3> <p>如果每一次上传都要通过Vue传到服务端之后，再上传到S3的话，那么就过于麻烦了，所以我们想使用的一个办法，就是在Vue前段想服务端请求一个预签名，然后通过这个预签名，直接从前端上传到S3，这样可以减少很多负载。</p> <p>所以我们需要搭建一个第三方签名或者鉴权的服务来负责返回我们的预签名URL。</p> <p>搭建的过程不复杂，和其他功能一样，而在网关进行转发的时候我出现了一个{“msg“:“invalid token“,“code“:401} 的问题。
+造成这个问题的原因是网关进行路由重写的时候，Spring Cloud Gateway需要一个特定的顺序，那就是路由精度高的优先级放在前面，精度低的优先级放在后面。这样就会顺利的将前端想网发送的请求转发到服务上。</p> <h3 id="s3配置相关"><a href="#s3配置相关" class="header-anchor">#</a> S3配置相关</h3> <p>创建一个bucket就不多赘述了。
+<img src="/subject/layman-cloud/cloud5.png" alt="0001"></p> <ol><li>首先是权限这里</li></ol> <div class="language-json line-numbers-mode"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;Version&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2012-10-17&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;Statement&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">&quot;Sid&quot;</span><span class="token operator">:</span> <span class="token string">&quot;PresignedPermissions&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;Effect&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Allow&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;Principal&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">&quot;AWS&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                    <span class="token string">&quot;arn:aws:iam::324971275476:user/layman-cloud&quot;</span><span class="token punctuation">,</span>
+                    <span class="token string">&quot;arn:aws:iam::324971275476:user/admin&quot;</span>
+                <span class="token punctuation">]</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;Action&quot;</span><span class="token operator">:</span> <span class="token string">&quot;s3:*&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;Resource&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token string">&quot;arn:aws:s3:::layman-cloud&quot;</span><span class="token punctuation">,</span>
+                <span class="token string">&quot;arn:aws:s3:::layman-cloud/*&quot;</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">&quot;Sid&quot;</span><span class="token operator">:</span> <span class="token string">&quot;PublicRead&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;Effect&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Allow&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;Principal&quot;</span><span class="token operator">:</span> <span class="token string">&quot;*&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;Action&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token string">&quot;s3:GetObject&quot;</span><span class="token punctuation">,</span>
+                <span class="token string">&quot;s3:GetObjectVersion&quot;</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;Resource&quot;</span><span class="token operator">:</span> <span class="token string">&quot;arn:aws:s3:::layman-cloud/*&quot;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br></div></div><p>公开访问的权限给了所有用户，而PutObject权限我们付给了我们的两个user。这要实现我们上传保护，而读取共有的目的。
+2. 跨域设置
+我们知道要从前端直接上传到S3的话，就要对我们的S3桶进行跨域设置，这一点S3也提供了傻瓜式的操作方法，</p> <div class="language-json line-numbers-mode"><pre class="language-json"><code><span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+        <span class="token property">&quot;AllowedHeaders&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token string">&quot;*&quot;</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;AllowedMethods&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token string">&quot;GET&quot;</span><span class="token punctuation">,</span>
+            <span class="token string">&quot;PUT&quot;</span><span class="token punctuation">,</span>
+            <span class="token string">&quot;HEAD&quot;</span><span class="token punctuation">,</span>
+            <span class="token string">&quot;POST&quot;</span><span class="token punctuation">,</span>
+            <span class="token string">&quot;DELETE&quot;</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;AllowedOrigins&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token string">&quot;*&quot;</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;ExposeHeaders&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token string">&quot;Access-Control-Allow-Origin&quot;</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;MaxAgeSeconds&quot;</span><span class="token operator">:</span> <span class="token number">3000</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><h3 id="编写预签名功能"><a href="#编写预签名功能" class="header-anchor">#</a> 编写预签名功能</h3> <p>编写这个功能本身不复杂，基本上就是按照最佳实践上提供的实例来进行。可是我犯了一个低级的错误。
+<img src="/subject/layman-cloud/aws-user.png" alt="0001">
+如图所示，在IDEA插件上我选择的是layman-account的配置文件，在编码中，我也将ProfileCredentialsProvider的参数设置成了layman-account。由于之前default配置文件中的key是公司的，所以之前在上传文件的时候全部都是提示403的错误，百思不得其解。最后一步一步排查，才找到原因。</p> <p>部署的时候，AWS的配置文件也要进行配置，才能有效进行权限验证。这也是这个简单的上传功能踩的最大的坑。</p> <h3 id="前端小问题"><a href="#前端小问题" class="header-anchor">#</a> 前端小问题</h3> <p>完全使用element-ui的组件，只要看文档就可以了。
+记录一个点就是，上传的方法和上传成功回调方法中的参数，都被我命名为了file。但是这两个file属性截然不同。
+上传方法的file，其实是页面中的对象，如果需要真正的上传用的文件，需要使用file.file。这里是我的命名问题，如果讲upload2S3的方法参数命名为target就更为明确了。
+而上传成功的回调函数，是element-ui返回的内容，所以得到的就是真正的file，这样回显用的数据就可以根据file来进行命名和设置了。</p> <div class="language-javascript line-numbers-mode"><pre class="language-javascript"><code> <span class="token function">upload2S3</span><span class="token punctuation">(</span><span class="token parameter">file</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>file<span class="token punctuation">.</span>file<span class="token punctuation">)</span>
+      <span class="token keyword">return</span> axios<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>signedUrl<span class="token punctuation">,</span> file<span class="token punctuation">.</span>file<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+        headers<span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token string">'Content-Type'</span><span class="token operator">:</span> <span class="token string">&quot;image/png&quot;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function">handleUploadSuccess</span><span class="token punctuation">(</span><span class="token parameter">res<span class="token punctuation">,</span> file</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$message</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        message<span class="token operator">:</span> <span class="token string">&quot;上传成功&quot;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&quot;success&quot;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&quot;上传成功...&quot;</span><span class="token punctuation">)</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>showFileList <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>fileList<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>fileList<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> file<span class="token punctuation">.</span>name<span class="token punctuation">,</span> url<span class="token operator">:</span> <span class="token string">&quot;https://layman-cloud.s3.ap-northeast-1.amazonaws.com/&quot;</span> <span class="token operator">+</span> file<span class="token punctuation">.</span>name <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">emitInput</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>fileList<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br></div></div><p>最后还有一点，其实有必要为每个上传的文件配置时间戳或者UUID来区别覆盖，但是那不是重点，为了演示就省略了。
+就这样。</p></div></section> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated: </span> <span class="time">6/29/2022, 3:08:08 PM</span></div></footer> <!----> <div class="comments-wrapper"><!----></div> <ul class="side-bar sub-sidebar-wrapper" style="width:0;" data-v-70334359></ul></main> <!----></div></div></div></div><div class="global-ui"><div class="back-to-ceiling" style="right:1rem;bottom:6rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;display:none;" data-v-c6073ba8 data-v-c6073ba8><svg t="1574745035067" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5404" class="icon" data-v-c6073ba8><path d="M526.60727968 10.90185116a27.675 27.675 0 0 0-29.21455937 0c-131.36607665 82.28402758-218.69155461 228.01873535-218.69155402 394.07834331a462.20625001 462.20625001 0 0 0 5.36959153 69.94390903c1.00431239 6.55289093-0.34802892 13.13561351-3.76865779 18.80351572-32.63518765 54.11355614-51.75690182 118.55860487-51.7569018 187.94566865a371.06718723 371.06718723 0 0 0 11.50484808 91.98906777c6.53300375 25.50556257 41.68394495 28.14064038 52.69160883 4.22606766 17.37162448-37.73630017 42.14135425-72.50938081 72.80769204-103.21549295 2.18761121 3.04276886 4.15646224 6.24463696 6.40373557 9.22774369a1871.4375 1871.4375 0 0 0 140.04691725 5.34970492 1866.36093723 1866.36093723 0 0 0 140.04691723-5.34970492c2.24727335-2.98310674 4.21612437-6.18497483 6.3937923-9.2178004 30.66633723 30.70611158 55.4360664 65.4791928 72.80769147 103.21549355 11.00766384 23.91457269 46.15860503 21.27949489 52.69160879-4.22606768a371.15156223 371.15156223 0 0 0 11.514792-91.99901164c0-69.36717486-19.13165746-133.82216804-51.75690182-187.92578088-3.42062944-5.66790279-4.76302748-12.26056868-3.76865837-18.80351632a462.20625001 462.20625001 0 0 0 5.36959269-69.943909c-0.00994388-166.08943902-87.32547796-311.81420293-218.6915546-394.09823051zM605.93803103 357.87693858a93.93749974 93.93749974 0 1 1-187.89594924 6.1e-7 93.93749974 93.93749974 0 0 1 187.89594924-6.1e-7z" p-id="5405" data-v-c6073ba8></path><path d="M429.50777625 765.63860547C429.50777625 803.39355007 466.44236686 1000.39046097 512.00932183 1000.39046097c45.56695499 0 82.4922232-197.00623328 82.5015456-234.7518555 0-37.75494459-36.9345906-68.35043303-82.4922232-68.34111062-45.57627738-0.00932239-82.52019037 30.59548842-82.51086798 68.34111062z" p-id="5406" data-v-c6073ba8></path></svg></div></div></div>
+    <script src="/assets/js/app.4e0eaa05.js" defer></script><script src="/assets/js/3.8704adc8.js" defer></script><script src="/assets/js/1.068f709e.js" defer></script><script src="/assets/js/51.1c5a6e27.js" defer></script>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 ---
-title: JavaScript知识点梳理-函数高级
-date: 2022-01-29
+title: JavaScript知识点梳理-函数 
+date: 20202-01-31
 ---
 
 ## 原型与原型链

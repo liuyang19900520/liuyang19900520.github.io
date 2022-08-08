@@ -19,6 +19,7 @@ module.exports = [{
     'layman-cloud-02',
     'layman-cloud-03',
     'layman-cloud-04',
-    'layman-cloud-04',
+    'layman-cloud-05',
+    'layman-cloud-06',
   ]
 }, ]

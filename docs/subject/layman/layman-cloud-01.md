@@ -1,11 +1,11 @@
 ---
 title: 尝试在虚拟机上配置docker来启动mysql和redis
 categories: 
- - linux
- - docker
+ - Linux
+ - Docker
 tags:
-  - linux
-  - docker
+ - Linux
+ - Docker
 date: 2021-12-01
 ---
 
@@ -66,10 +66,10 @@ docker update mysql --restart=always
 ```
 
 当虚拟机重启后，网络无法访问的情况的时候，同时我们在ifcofig中也没有看到执勤啊ets33的网卡，我们可以选择禁用网络管理器后再重启的办法来进行
-···shell
+```shell
 systemctl stop NetworkManager
 systemctl disable NetworkManager
-···
+```
 
 同时为了访问简单，我们有必要把centos的防火墙进行关闭。
 

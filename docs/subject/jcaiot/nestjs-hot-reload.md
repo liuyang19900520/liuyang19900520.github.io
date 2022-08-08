@@ -4,7 +4,7 @@ categories:
  - NestJS
 tags:
  - NestJS
-date: 2020-06-01
+date: 2020-05-18
 ---
 之前在NestJS的开发中，每每修改一些文件还要重新运行一遍程序，实在是有些麻烦，于是从官网上找到一篇关于热重载的帖子，具体参考：[NestJS热重载](https://docs.nestjs.cn/7/recipes?id=%e7%83%ad%e9%87%8d%e8%bd%bd)  
 

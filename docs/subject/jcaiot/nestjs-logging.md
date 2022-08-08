@@ -4,7 +4,7 @@ categories:
  - NestJS
 tags:
  - NestJS
-date: 2020-06-16
+date: 2020-07-16
 ---
 
 这一个章节，我们丰富一下NestJS在服务端的相关配置。这次主要实现以下日志的输出。

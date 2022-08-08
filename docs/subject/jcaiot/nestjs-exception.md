@@ -4,7 +4,7 @@ categories:
  - NestJS
 tags:
  - NestJS
-date: 2020-06-13
+date: 2020-07-08
 ---
 
 这一个章节，我们丰富一下NestJS在服务端的相关配置。主要设计一下异常处理。 

@@ -1,6 +1,10 @@
 ---
 title: JavaScript知识点梳理-基础 
-date: 20202-01-28
+date: 2022-01-28
+categories: 
+ - JavaScript
+tags:
+ - JavaScript
 ---
 
 最近补充了一下JavaScript的相关知识，把相关的要点进行一个简要的梳理备份。

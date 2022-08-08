@@ -1,6 +1,10 @@
 ---
 title: JavaScript知识点梳理-函数 
-date: 20202-01-31
+date: 2022-01-31
+categories: 
+ - JavaScript
+tags:
+ - JavaScript
 ---
 
 ## 原型与原型链

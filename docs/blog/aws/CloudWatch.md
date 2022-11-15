@@ -1,5 +1,5 @@
 ---
-title: AWS管理与监控一些笔记
+title: AWS管理与监控的一些笔记(CloudWatch)
 date: 2022-02-18
 categories: 
  - AWS

@@ -3,7 +3,7 @@ title: 履歴書(日本語)
 date: 1990-05-20
 ---
 
-## 基本情報 
+## 基本情報TEST
 <table>
     <tbody>
         <tr><td>性 别：男</td><td>年 龄：32</td></tr>

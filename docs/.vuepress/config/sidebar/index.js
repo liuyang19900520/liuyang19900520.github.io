@@ -1,12 +1,14 @@
-const jcaiot = require('./jcaiot');
-const layman= require('./layman');
-const leetcode = require('./leetcode');
+const jcaiot = require("./jcaiot");
+const layman = require("./layman");
+const leetcode = require("./leetcode");
+
+const enSidebar = require("./en-sidebar");
 
 module.exports = {
-  'sidebar': Object.assign({}, {
-    '/subject/layman/': layman,
-    '/subject/jcaiot/': jcaiot,
-    '/subject/leetcode/': leetcode,
-  })
-
-}
+  sidebar: Object.assign(
+    {},
+    {
+      "/en": enSidebar,
+    }
+  ),
+};

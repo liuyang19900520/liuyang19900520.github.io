@@ -17,6 +17,7 @@
     "vuepress-theme-reco": "^1.6.6"
   },
   "dependencies": {
+    "openai": "^4.78.1",
     "vuepress-theme-reco": "^1.6.6"
   }
 }

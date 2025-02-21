@@ -11,6 +11,8 @@ jobs:
     env:
       VSSUEID: ${{ secrets.VSSUEID }}
       VSSUESECRET: ${{ secrets.VSSUESECRET }}
+      ACTIONS_STEP_DEBUG: true
+      ACTIONS_RUNNER_DEBUG: true
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
